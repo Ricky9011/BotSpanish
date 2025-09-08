@@ -1,0 +1,31 @@
+services:
+  bot:
+    build: .
+    env_file: .env
+    volumes:
+      - ./.env:/app/.env  # Montar el archivo .env del host en el contenedor
+    depends_on:
+      - db
+    networks:
+      - bot-network
+
+  db:
+    image: postgres:15
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - bot-network
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
+
+networks:
+  bot-network:
+    driver: bridge

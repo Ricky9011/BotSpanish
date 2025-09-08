@@ -1,0 +1,204 @@
+{
+    "curiosidades": [
+        {
+            "categoria": "palabras",
+            "texto": "En Argentina, Uruguay y Paraguay, 'coger' significa tomar o agarrar, mientras que en México y España tiene un significado sexual."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "En España se dice 'ordenador', en México 'computadora' y en Chile 'computador'."
+        },
+        {
+            "categoria": "gramática",
+            "texto": "El español es el único idioma que usa signos de interrogación y exclamación invertidos al inicio de las frases: ¿¡"
+        },
+        {
+            "categoria": "cultura",
+            "texto": "En República Dominicana, 'guagua' significa autobús, mientras que en Chile significa bebé."
+        },
+        {
+            "categoria": "historia",
+            "texto": "La palabra más larga del español es 'electroencefalografista' con 23 letras."
+        },
+        {
+            "categoria": "regionalismos",
+            "texto": "En Colombia, 'chévere' significa excelente o genial, mientras que en España no se usa."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Tortilla' en España es un plato de huevo y patata, en México es de maíz o trigo."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "En Argentina, 'boludo' puede ser un insulto o un término cariñoso entre amigos según el contexto."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "El español tiene más de 100,000 palabras en el diccionario de la RAE."
+        },
+        {
+            "categoria": "regionalismos",
+            "texto": "En Perú, 'pata' significa amigo, mientras que en otros países se refiere a la extremidad animal."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Fresa' en España es la fruta, en México se refiere a una persona pretenciosa."
+        },
+        {
+            "categoria": "gramática",
+            "texto": "El español es la segunda lengua materna más hablada del mundo después del chino mandarín."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "En Puerto Rico se usa 'chavos' para referirse al dinero, derivado de 'ochavo', moneda antigua española."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "'Ahorita' en México significa 'en este momento', en Colombia 'dentro de un rato' y en Venezuela 'tal vez'."
+        },
+        {
+            "categoria": "historia",
+            "texto": "La letra 'ñ' es exclusiva del español y no existe en el alfabeto latino original."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Coger' en Colombia significa tener relaciones sexuales, mientras que en España es simplemente tomar algo."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "El español tiene 27 letras en su alfabeto: 26 del inglés más la 'ñ'."
+        },
+        {
+            "categoria": "regionalismos",
+            "texto": "En Chile, 'pololo' significa novio, mientras que en otros países no se usa."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "'Vale' en España significa 'ok', en México apenas se usa."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Concha' en Argentina es una parte del cuerpo femenino, en México es el caparazón de una tortuga."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "El español es el idioma oficial en 21 países."
+        },
+        {
+            "categoria": "gramática",
+            "texto": "El español tiene tres conjugaciones verbales: -ar, -er, -ir."
+        },
+        {
+            "categoria": "historia",
+            "texto": "El primer texto en español data del año 959 d.C., las Glosas Emilianenses."
+        },
+        {
+            "categoria": "regionalismos",
+            "texto": "En Cuba, 'asere' significa amigo, derivado de una expresión africana."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Pico' en Chile significa beso, en otros países es la punta de algo."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "En España se dice 'móvil' para teléfono celular, en América Latina se dice 'celular'."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "El español tiene más de 570 millones de hablantes en todo el mundo."
+        },
+        {
+            "categoria": "gramática",
+            "texto": "El español es el tercer idioma más usado en internet después del inglés y el chino."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Guay' en España significa genial, en otros países no se usa."
+        },
+        {
+            "categoria": "regionalismos",
+            "texto": "En Guatemala, 'pisto' significa dinero, mientras que en España es una bebida alcohólica."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "'Che' en Argentina es una interjección similar a 'oye', famosa por el Che Guevara."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "El español es el segundo idioma más estudiado del mundo después del inglés."
+        },
+        {
+            "categoria": "historia",
+            "texto": "El español deriva del latín vulgar hablado en la península ibérica después de la caída del Imperio Romano."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Chucho' en México puede significar perro, frío o una persona hábil según el contexto."
+        },
+        {
+            "categoria": "gramática",
+            "texto": "El español tiene dos verbos para 'ser': ser y estar, que no existen en muchos otros idiomas."
+        },
+        {
+            "categoria": "regionalismos",
+            "texto": "En Costa Rica, 'tuanis' significa excelente o de acuerdo."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "'¡Qué chivo!' en El Salvador significa ¡qué genial!, mientras que en España no se entiende."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "El español tiene más de 2,000 arabismos como 'aceite', 'azúcar' y 'alfombra'."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Cura' en España es un sacerdote, en Colombia significa remedio médico."
+        },
+        {
+            "categoria": "historia",
+            "texto": "El español llegó a América en 1492 con el primer viaje de Cristóbal Colón."
+        },
+        {
+            "categoria": "regionalismos",
+            "texto": "En Bolivia, 'chuqui' significa dinero, mientras que en otros países no se usa."
+        },
+        {
+            "categoria": "gramática",
+            "texto": "El español tiene 17 tiempos verbales en modo indicativo."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "'Puchica' en El Salvador es una expresión de sorpresa similar a '¡caramba!'."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "El español de Filipinas tiene influencias del tagalo y otras lenguas locales."
+        },
+        {
+            "categoria": "palabras",
+            "texto": "'Bicho' en Puerto Rico significa insecto, en Argentina se refiere a los genitales masculinos."
+        },
+        {
+            "categoria": "regionalismos",
+            "texto": "En Honduras, 'cipote' significa niño, mientras que en España es un insulto."
+        },
+        {
+            "categoria": "gramática",
+            "texto": "El español tiene género gramatical: masculino y femenino."
+        },
+        {
+            "categoria": "expresiones",
+            "texto": "'¡Aguas!' en México significa ¡cuidado!, mientras que en España se refiere literalmente al agua."
+        },
+        {
+            "categoria": "cultura",
+            "texto": "El español tiene numerosos dialectos: castellano, andaluz, caribeño, rioplatense, etc."
+        },
+        {
+            "categoria": "historia",
+            "texto": "La Real Academia Española se fundó en 1713 para regular el idioma."
+        }
+    ]
+}
