@@ -15,15 +15,14 @@ async def daily_challenge(message: Message | CallbackQuery):
         message = message.message
 
     user_id = message.from_user.id
-    # Lógica para el reto diario
-    # Por ejemplo, un ejercicio especial o un conjunto de ejercicios
+    # Lógica para el reto diario Por ejemplo, un ejercicio especial o un conjunto de ejercicios, aqui integrare
+    # despues ejercicios de nivel dificil a la bd.
 
     # Obtener un ejercicio especial para el reto
     with DatabaseService.get_cursor() as cursor:
         cursor.execute("""
             SELECT * FROM ejercicios 
-            WHERE nivel = 'intermedio' 
-            AND categoria = 'gramática'
+            WHERE nivel = 'avanzado' 
             ORDER BY RANDOM() 
             LIMIT 1
         """)

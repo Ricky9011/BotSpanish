@@ -1,15 +1,8 @@
 from dataclasses import dataclass
 
-
-@dataclass
 class Curiosity:
-    id: int
-    categoria: str
-    texto: str
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "categoria": self.categoria,
-            "texto": self.texto
-        }
+    def __init__(self, id: int, categoria: str, texto: str, activo: bool = True):
+        self.id = id
+        self.categoria = categoria
+        self.texto = texto  # Esta propiedad debe existir
+        self.activo = activo

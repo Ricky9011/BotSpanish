@@ -65,9 +65,18 @@ async def check_answer(message: Message, state: FSMContext):
         ExerciseService.mark_exercise_completed(user_id, exercise_data["id"])
         UserService.update_user_stats(user_id)
 
+        #Obtener una curiosidad aleatoria
+        # Obtener una curiosidad aleatoria
+        curiosity_obj = DatabaseService.get_random_curiosity()
+        if curiosity_obj:
+            curiosity_text = curiosity_obj.texto
+        else:
+            curiosity_text = "¡Sigue practicando para aprender más curiosidades!"
+
         # Mensaje de éxito
         await message.answer(
             "✅ ¡Correcto! +1 punto\n\n"
+            f"💡 **Curiosidad:** {curiosity_text}\n\n"
             "¿Quieres continuar practicando?",
             reply_markup=exercise_keyboard(),
             parse_mode="Markdown"

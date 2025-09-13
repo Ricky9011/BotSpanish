@@ -18,7 +18,7 @@ async def cmd_curiosidad(message: Message):
         return
 
     message_text = (
-        f"🧠 *Curiosidad del español ({curiosity.categoria}):*\n\n"
+        f"🧠*Curiosidad del español ({curiosity.texto}):*\n\n"
         f"{sanitize_text(curiosity.texto)}"
     )
 
