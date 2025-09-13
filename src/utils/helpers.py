@@ -16,3 +16,9 @@ def sanitize_text(text: str, max_length=200) -> str:
         text = text[:max_length-3] + "..."
 
     return text
+
+def validate_input(text: str, max_length=1000) -> str:
+    """Valida y limpia la entrada del usuario"""
+    if len(text) > max_length:
+        raise ValueError("La entrada es demasiado larga")
+    return sanitize_text(text)

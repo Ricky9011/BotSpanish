@@ -1,5 +1,5 @@
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from aiogram.types import ReplyKeyboardMarkup
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 
 def main_menu() -> ReplyKeyboardMarkup:

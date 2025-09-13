@@ -1,7 +1,8 @@
 from aiogram import Router, F
-from aiogram.types import Message
 from aiogram.filters import Command
-from src.services.database_service import DatabaseService
+from aiogram.types import Message
+
+from src.services.database import DatabaseService
 from src.utils.helpers import sanitize_text
 
 router = Router()

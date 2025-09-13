@@ -1,30 +1,43 @@
+import os
+from contextlib import contextmanager
+from typing import List, Optional
 import psycopg2
 from psycopg2 import pool
-from contextlib import contextmanager
-import os
-from typing import List, Optional
-from src.models.exercise import Exercise
 from src.models.curiosity import Curiosity
-
+from src.models.exercise import Exercise
+import logging
 
 class DatabaseService:
     _connection_pool = None
 
     @classmethod
     def initialize(cls):
-        cls._connection_pool = pool.SimpleConnectionPool(
-            minconn=1,
-            maxconn=10,
-            host=os.getenv("DB_HOST"),
-            port=os.getenv("DB_PORT"),
-            dbname=os.getenv("DB_NAME"),
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASSWORD")
-        )
+        try:
+            db_params = {
+                "host": os.getenv("DB_HOST"),
+                "port": int(os.getenv("DB_PORT") or 5432),
+                "dbname": os.getenv("DB_NAME"),
+                "user": os.getenv("DB_USER"),
+                "password": os.getenv("DB_PASSWORD")
+            }
+            logging.info(f"Database parameters: {db_params}")
+            if None in db_params.values():
+                raise ValueError(f"Missing database environment variables: {db_params}")
+            cls._connection_pool = pool.SimpleConnectionPool(
+                minconn=1,
+                maxconn=10,
+                **db_params
+            )
+            logging.info("Connection pool initialized successfully")
+        except psycopg2.Error as e:
+            logging.error(f"Failed to initialize connection pool: {e}")
+            raise
 
     @classmethod
     @contextmanager
     def get_cursor(cls):
+        if cls._connection_pool is None:
+            raise ValueError("Connection pool not initialized")
         conn = cls._connection_pool.getconn()
         try:
             with conn.cursor() as cursor:
@@ -32,7 +45,7 @@ class DatabaseService:
             conn.commit()
         except Exception as e:
             conn.rollback()
-            raise e
+            raise
         finally:
             cls._connection_pool.putconn(conn)
 
@@ -80,7 +93,7 @@ class DatabaseService:
 
     @classmethod
     def add_exercise(cls, categoria: str, nivel: str, pregunta: str,
-                     opciones: List[str], respuesta_correcta: int, explicacion: str = None) -> int:
+                    opciones: List[str], respuesta_correcta: int, explicacion: str = None) -> int:
         with cls.get_cursor() as cursor:
             cursor.execute("""
                 INSERT INTO ejercicios (categoria, nivel, pregunta, opciones, respuesta_correcta, explicacion)
@@ -101,6 +114,14 @@ class DatabaseService:
 
             return cursor.fetchone()[0]
 
+    @classmethod
+    def clear_exercises(cls):
+            """Elimina todos los ejercicios de la base de datos"""
+            with cls.get_cursor() as cursor:
+                cursor.execute("DELETE FROM ejercicios")
 
-# Inicializar el pool de conexiones al importar
-DatabaseService.initialize()
+    @classmethod
+    def clear_curiosities(cls):
+            """Elimina todas las curiosidades de la base de datos"""
+            with cls.get_cursor() as cursor:
+                cursor.execute("DELETE FROM curiosidades")
