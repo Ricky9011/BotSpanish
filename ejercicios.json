@@ -1,0 +1,632 @@
+{
+  "principiante": {
+    "gramática": [
+      {
+        "pregunta": "Completa la oración: 'Compré _____ de chocolate en la tienda.'",
+        "opciones": [
+          "un helado",
+          "el helado",
+          "la helado",
+          "una helado"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "Completa la oración: '_____ de mi hermano es muy paciente.'",
+        "opciones": [
+          "El profesor",
+          "La profesor",
+          "Un profesor",
+          "Una profesor"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "Completa la oración: '_____ es un sentimiento maravilloso.'",
+        "opciones": [
+          "El alegría",
+          "La alegría",
+          "Un alegría",
+          "Una alegría"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "Completa la oración: '_____ aplicado siempre hace su tarea.'",
+        "opciones": [
+          "El estudiante",
+          "La estudiante",
+          "Un estudiante",
+          "Una estudiante"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "Completa la oración: 'Pedimos _____ familiar para cenar.'",
+        "opciones": [
+          "un pizza",
+          "el pizza",
+          "la pizza",
+          "una pizza"
+        ],
+        "respuesta": 3
+      }
+    ],
+    "vocabulario": [
+      {
+        "pregunta": "¿Cuál de estas palabras es un sentimiento?",
+        "opciones": [
+          "profesor",
+          "alegría",
+          "helado",
+          "estudiante"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Cuál de estas palabras se refiere a un alimento?",
+        "opciones": [
+          "alegría",
+          "tristeza",
+          "helado",
+          "inteligencia"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "¿Cuál de estas palabras es una profesión?",
+        "opciones": [
+          "alegría",
+          "estudiante",
+          "doctor",
+          "pizza"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "¿Qué significa 'inteligencia'?",
+        "opciones": [
+          "sentimiento",
+          "cualidad mental",
+          "comida",
+          "persona"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Cuál es el antónimo de 'alegría'?",
+        "opciones": [
+          "tristeza",
+          "felicidad",
+          "ira",
+          "sorpresa"
+        ],
+        "respuesta": 0
+      }
+    ],
+    "verbos": [
+      {
+        "pregunta": "¿Cuál es el infinitivo de 'hace'?",
+        "opciones": [
+          "hacer",
+          "hacemos",
+          "hago",
+          "hacía"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "Conjuga el verbo 'ser' en presente para 'él'.",
+        "opciones": [
+          "soy",
+          "eres",
+          "es",
+          "somos"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "Conjuga el verbo 'tener' en presente para 'yo'.",
+        "opciones": [
+          "tengo",
+          "tienes",
+          "tiene",
+          "tenemos"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "¿Qué verbo significa 'comer'?",
+        "opciones": [
+          "beber",
+          "vivir",
+          "comer",
+          "correr"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "Conjuga 'hablar' en presente para 'nosotros'.",
+        "opciones": [
+          "hablo",
+          "hablas",
+          "habla",
+          "hablamos"
+        ],
+        "respuesta": 3
+      }
+    ],
+    "frases": [
+      {
+        "pregunta": "Completa la frase: 'Hoy _____ lunes.'",
+        "opciones": [
+          "soy",
+          "eres",
+          "es",
+          "somos"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "¿Cómo se dice 'I have hunger' en español?",
+        "opciones": [
+          "Tengo hambre",
+          "Tengo sed",
+          "Tengo frío",
+          "Tengo sueño"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "Completa la frase: 'Me _____ Juan.'",
+        "opciones": [
+          "llamo",
+          "llamas",
+          "llama",
+          "llamamos"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "¿Cómo preguntarías '¿Cómo estás?' formalmente?",
+        "opciones": [
+          "¿Qué tal?",
+          "¿Cómo está usted?",
+          "¿Qué pasa?",
+          "¿Cómo te va?"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Qué significa 'Tengo hambre'?",
+        "opciones": [
+          "Necesito dormir",
+          "Necesito comer",
+          "Tengo sed",
+          "Estoy cansado"
+        ],
+        "respuesta": 1
+      }
+    ]
+  },
+  "intermedio": {
+    "gramática": [
+      {
+        "pregunta": "¿Cuál es la forma correcta?",
+        "opciones": [
+          "la mi casa",
+          "mi casa",
+          "el mi casa",
+          "la casa de mí"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "Completa la oración: 'Quiero _____ libro.'",
+        "opciones": [
+          "otro",
+          "un otro",
+          "el otro",
+          "la otro"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "Completa la oración: '_____ estudiante debe ser responsable.'",
+        "opciones": [
+          "Todo el",
+          "Todo",
+          "El todo",
+          "Todos los"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "Completa la oración: 'Es _____ misma historia.'",
+        "opciones": [
+          "la",
+          "el",
+          "una",
+          "un"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "Completa la oración: '_____ persona me ayudó ayer.'",
+        "opciones": [
+          "Tal",
+          "La tal",
+          "Un tal",
+          "Una tal"
+        ],
+        "respuesta": 0
+      }
+    ],
+    "vocabulario": [
+      {
+        "pregunta": "¿Cuál de estas palabras es un sustantivo abstracto?",
+        "opciones": [
+          "mesa",
+          "silla",
+          "felicidad",
+          "libro"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "¿Qué significa 'procrastinar'?",
+        "opciones": [
+          "Proceder",
+          "Procesar",
+          "Dejar para después",
+          "Proclamar"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "Sinónimo de 'rápidamente'",
+        "opciones": [
+          "Lentamente",
+          "Velozmente",
+          "Pausadamente",
+          "Cuidadosamente"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "Antónimo de 'generoso'",
+        "opciones": [
+          "Amable",
+          "Tacaño",
+          "Rico",
+          "Feliz"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Qué significa 'soportar'?",
+        "opciones": [
+          "Apoyar",
+          "Tolerar",
+          "Ayudar",
+          "Sostener"
+        ],
+        "respuesta": 1
+      }
+    ],
+    "verbos": [
+      {
+        "pregunta": "¿Qué verbo se usa en la expresión '_____ la maleta'?",
+        "opciones": [
+          "tener",
+          "hacer",
+          "dar",
+          "ir"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "Conjuga 'saber' en imperfecto para 'nosotros'.",
+        "opciones": [
+          "Sabíamos",
+          "Sabíais",
+          "Sabían",
+          "Sabía"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "¿Cuál es el participio de 'escribir'?",
+        "opciones": [
+          "Escribido",
+          "Escrito",
+          "Escribiendo",
+          "Escribado"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "Conjuga 'poner' en subjuntivo presente para 'yo'.",
+        "opciones": [
+          "Pongo",
+          "Pon",
+          "Ponga",
+          "Ponía"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "¿Qué verbo es irregular en todos sus tiempos?",
+        "opciones": [
+          "Hablar",
+          "Comer",
+          "Ser",
+          "Vivir"
+        ],
+        "respuesta": 2
+      }
+    ],
+    "comprensión": [
+      {
+        "pregunta": "¿Qué significa 'tener prisa'?",
+        "opciones": [
+          "Estar cansado",
+          "Tener urgencia",
+          "Tener sueño",
+          "Tener hambre"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Qué significa la expresión 'ponerse las pilas'?",
+        "opciones": [
+          "Cargar baterías",
+          "Ponerse a trabajar con energía",
+          "Estar cansado",
+          "Relajarse"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "'Estar en las nubes' significa:",
+        "opciones": [
+          "Estar feliz",
+          "Estar distraído",
+          "Estar volando",
+          "Tener éxito"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "En el contexto: 'Me duele el alma', ¿qué expresa?",
+        "opciones": [
+          "Dolor físico",
+          "Tristeza profunda",
+          "Felicidad",
+          "Cansancio"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "'No hay moros en la costa' significa:",
+        "opciones": [
+          "No hay problemas",
+          "No hay gente",
+          "No hay peligro",
+          "No hay extranjeros"
+        ],
+        "respuesta": 2
+      }
+    ]
+  },
+  "avanzado": {
+    "gramática": [
+      {
+        "pregunta": "Conjuga 'haber' en subjuntivo pluscuamperfecto para 'ellos'.",
+        "opciones": [
+          "Hubieran",
+          "Hubiesen",
+          "Habrían",
+          "Habían"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Cuál es la forma correcta de la pasiva refleja?",
+        "opciones": [
+          "Se venden libros",
+          "Los libros son vendidos",
+          "Vendieron libros",
+          "Libros vendidos"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "Conjuga 'decir' en futuro perfecto para 'yo'.",
+        "opciones": [
+          "Habré dicho",
+          "Habrás dicho",
+          "Habrá dicho",
+          "Habremos dicho"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "¿Qué modo verbal expresa duda o posibilidad?",
+        "opciones": [
+          "Indicativo",
+          "Subjuntivo",
+          "Imperativo",
+          "Condicional"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "Conjuga 'satisfacer' en condicional compuesto para 'tú'.",
+        "opciones": [
+          "Habrías satisfecho",
+          "Habrías satisfacido",
+          "Satisfacerías",
+          "Satisfarías"
+        ],
+        "respuesta": 0
+      }
+    ],
+    "vocabulario": [
+      {
+        "pregunta": "¿Qué significa 'idiosincrasia'?",
+        "opciones": [
+          "Identidad",
+          "Modismo",
+          "Característica única",
+          "Idea"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "Sinónimo de 'pernicioso'",
+        "opciones": [
+          "Beneficioso",
+          "Dañino",
+          "Permitido",
+          "Necesario"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Qué es un 'sesgo'?",
+        "opciones": [
+          "Un corte",
+          "Un prejuicio",
+          "Una sesión",
+          "Una curva"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "Antónimo de 'efímero'",
+        "opciones": [
+          "Temporal",
+          "Durable",
+          "Fugaz",
+          "Instantáneo"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Qué significa 'procrastinar'?",
+        "opciones": [
+          "Proceder",
+          "Procesar",
+          "Dejar para después",
+          "Proclamar"
+        ],
+        "respuesta": 2
+      }
+    ],
+    "expresiones": [
+      {
+        "pregunta": "¿Qué significa 'meter la pata'?",
+        "opciones": [
+          "Ayudar a alguien",
+          "Cometer un error",
+          "Interferir",
+          "Comenzar algo"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "'Ir de punta en blanco' significa:",
+        "opciones": [
+          "Estar armado",
+          "Ir elegantemente vestido",
+          "Estar listo",
+          "Estar enojado"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Cuándo se usa 'a pies juntillas'?",
+        "opciones": [
+          "Expresar certeza",
+          "Describir postura",
+          "Indicar velocidad",
+          "Mostrar acuerdo"
+        ],
+        "respuesta": 3
+      },
+      {
+        "pregunta": "'No dar pie con bola' significa:",
+        "opciones": [
+          "Ser torpe",
+          "Tener éxito",
+          "Ser inactivo",
+          "Ser preciso"
+        ],
+        "respuesta": 0
+      },
+      {
+        "pregunta": "¿Qué implica 'ser un cero a la izquierda'?",
+        "opciones": [
+          "Ser importante",
+          "Ser inútil",
+          "Ser el primero",
+          "Ser matemático"
+        ],
+        "respuesta": 1
+      }
+    ],
+    "literatura": [
+      {
+        "pregunta": "¿A qué movimiento pertenece García Márquez?",
+        "opciones": [
+          "Romanticismo",
+          "Realismo",
+          "Boom latinoamericano",
+          "Generación del 98"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "¿Quién escribió 'La Celestina'?",
+        "opciones": [
+          "Cervantes",
+          "Fernando de Rojas",
+          "Lope de Vega",
+          "Calderón de la Barca"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿Qué figura literaria es 'el viento susurraba secretos'?",
+        "opciones": [
+          "Metáfora",
+          "Hipérbole",
+          "Personificación",
+          "Metonimia"
+        ],
+        "respuesta": 2
+      },
+      {
+        "pregunta": "¿Qué obra es de Federico García Lorca?",
+        "opciones": [
+          "Platero y yo",
+          "La casa de Bernarda Alba",
+          "Niebla",
+          "Rayuela"
+        ],
+        "respuesta": 1
+      },
+      {
+        "pregunta": "¿A qué siglo pertenece el Siglo de Oro español?",
+        "opciones": [
+          "XIV-XV",
+          "XV-XVI",
+          "XVI-XVII",
+          "XVIII-XIX"
+        ],
+        "respuesta": 2
+      }
+    ]
+  }
+}
