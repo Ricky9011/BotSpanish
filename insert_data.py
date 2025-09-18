@@ -1,19 +1,24 @@
 import json
 import logging
+import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from src.services.database import DatabaseService
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.storage.memory import MemoryStorage
+import psycopg2
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Inicializar bot y dispatcher
-bot = Bot(token="YOUR_BOT_TOKEN")  # Reemplaza con tu token
+bot = Bot(token=os.getenv("BOT_TOKEN"))  # Use token from environment
 storage = MemoryStorage()
 dp = Dispatcher(bot=bot, storage=storage)
 
@@ -23,8 +28,19 @@ class ImportStates(StatesGroup):
     WAITING_FOR_JSON = State()
 
 
-# Lista de IDs de administradores (carga desde .env o una DB en producción)
-ADMIN_IDS = [123456789]  # Reemplaza con los IDs reales
+# Lista de IDs de administradores (carga desde .env)
+ADMIN_IDS = [int(id) for id in os.getenv("ADMIN_IDS", "").split(",") if id]
+
+
+# Función para obtener conexión a la base de datos
+def get_db_connection():
+    return psycopg2.connect(
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT")
+    )
 
 
 # Función para normalizar opciones
@@ -65,12 +81,9 @@ def normalize_exercise(ejercicio, nivel, categoria):
     if not (0 <= ejercicio["respuesta"] < len(normalized_options)):
         raise ValueError(f"Respuesta fuera de rango en {nivel}/{categoria}: {ejercicio['respuesta']}")
 
-    # Serializar opciones como JSON para la columna TEXT
-    options_json = json.dumps(normalized_options, ensure_ascii=False)
-
     return {
         "pregunta": ejercicio["pregunta"],
-        "opciones": options_json,  # Cadena JSON para columna TEXT
+        "opciones": normalized_options,  # Lista para columna TEXT[]
         "respuesta": ejercicio["respuesta"],
         "explicacion": ejercicio.get("explicacion", "Sin explicación proporcionada")
     }
@@ -83,37 +96,62 @@ async def import_json_to_db(file_content, chat_id, bot):
         # Parsear el contenido del archivo
         ejercicios_data = json.loads(file_content)
         inserted_exercises = 0
+        failed_exercises = []
 
-        # Normalizar e importar
+        # Conectar a la base de datos
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Procesar cada ejercicio
         for nivel, categorias in ejercicios_data.items():
             for categoria, ejercicios in categorias.items():
                 for ejercicio in ejercicios:
                     try:
                         normalized_exercise = normalize_exercise(ejercicio, nivel, categoria)
-                        DatabaseService.add_exercise(
-                            categoria=categoria,
-                            nivel=nivel,
-                            pregunta=normalized_exercise["pregunta"],
-                            opciones=normalized_exercise["opciones"],  # Ya es una cadena JSON
-                            respuesta_correcta=normalized_exercise["respuesta"],
-                            explicacion=normalized_exercise["explicacion"]
+
+                        # Insertar en la base de datos
+                        cursor.execute(
+                            "INSERT INTO ejercicios (categoria, nivel, pregunta, opciones, respuesta_correcta, explicacion) VALUES (%s, %s, %s, %s, %s, %s)",
+                            (
+                                categoria,
+                                nivel,
+                                normalized_exercise["pregunta"],
+                                normalized_exercise["opciones"],
+                                normalized_exercise["respuesta"],
+                                normalized_exercise["explicacion"]
+                            )
                         )
                         inserted_exercises += 1
                         logger.info(f"Insertado ejercicio: {normalized_exercise['pregunta'][:50]}...")
                     except Exception as e:
-                        logger.error(f"Error insertando ejercicio en {nivel}/{categoria}: {e}")
-                        await bot.send_message(chat_id, f"Error insertando ejercicio: {str(e)}")
+                        error_msg = f"Error insertando ejercicio en {nivel}/{categoria}: {str(e)}"
+                        logger.error(error_msg)
+                        failed_exercises.append(error_msg)
 
-        # Verificar conteos
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) FROM ejercicios")
-            total_ejercicios = cursor.fetchone()[0]
+        # Confirmar los cambios
+        conn.commit()
 
-        await bot.send_message(
-            chat_id,
-            f"¡Importación completa! Ejercicios insertados: {inserted_exercises}\n"
-            f"Total ejercicios en DB: {total_ejercicios}"
-        )
+        # Obtener el conteo total de ejercicios
+        cursor.execute("SELECT COUNT(*) FROM ejercicios")
+        total_ejercicios = cursor.fetchone()[0]
+
+        # Cerrar conexión
+        cursor.close()
+        conn.close()
+
+        # Preparar mensaje de resultado
+        message = f"¡Importación completa! Ejercicios insertados: {inserted_exercises}\nTotal ejercicios en DB: {total_ejercicios}"
+
+        # Agregar información sobre errores si los hubo
+        if failed_exercises:
+            message += f"\n\nErrores encontrados ({len(failed_exercises)}):"
+            for i, error in enumerate(failed_exercises[:5]):  # Mostrar solo los primeros 5 errores
+                message += f"\n{i + 1}. {error}"
+            if len(failed_exercises) > 5:
+                message += f"\n... y {len(failed_exercises) - 5} errores más."
+
+        await bot.send_message(chat_id, message)
+
     except json.JSONDecodeError:
         await bot.send_message(chat_id, "Error: El archivo JSON tiene un formato inválido.")
     except Exception as e:
@@ -174,7 +212,6 @@ async def process_json_file(message: types.Message, state: FSMContext):
 
 # Iniciar el bot
 async def main():
-    DatabaseService.initialize()
     await dp.start_polling(bot)
 
 
