@@ -1,34 +1,21 @@
 from aiogram.types import ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-
-def main_menu() -> ReplyKeyboardMarkup:
+def build_main_menu_keyboard() -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
-    builder.button(text="📝 Ejercicio")
-    builder.button(text="🏆 Reto Diario")
-    builder.button(text="📊 Progreso")
-    builder.button(text="🎖️ Mis Logros")
-    builder.button(text="⚙️ Cambiar Nivel")
-    builder.button(text="📚 Curiosidad")
-    builder.button(text="👥 Invitar Amigos")
-    builder.button(text="💎 Premium")
-    builder.button(text="💬 Enviar Opinión")
+    buttons = [
+        "📝 Ejercicio", "🏆 Reto Diario", "📊 Progreso", "🎖️ Mis Logros",
+        "⚙️ Cambiar Nivel", "📚 Curiosidad", "👥 Invitar Amigos",
+        "💎 Premium", "💬 Enviar Opinión"
+    ]
+    builder.add(*buttons)
     builder.adjust(2, 2, 2, 2, 1)
     return builder.as_markup(resize_keyboard=True)
-
 
 class MainMenuKeyboard:
     @staticmethod
     async def build() -> ReplyKeyboardMarkup:
-        builder = ReplyKeyboardBuilder()
-        builder.button(text="📝 Ejercicio")
-        builder.button(text="🏆 Reto Diario")
-        builder.button(text="📊 Progreso")
-        builder.button(text="🎖️ Mis Logros")
-        builder.button(text="⚙️ Cambiar Nivel")
-        builder.button(text="📚 Curiosidad")
-        builder.button(text="👥 Invitar Amigos")
-        builder.button(text="💎 Premium")
-        builder.button(text="💬 Enviar Opinión")
-        builder.adjust(2, 2, 2, 2, 1)
-        return builder.as_markup(resize_keyboard=True)
+        return build_main_menu_keyboard()
+
+def main_menu() -> ReplyKeyboardMarkup:
+    return build_main_menu_keyboard()
