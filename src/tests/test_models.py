@@ -3,6 +3,7 @@ from src.models.user import User
 from src.models.exercise import Exercise
 from src.models.curiosity import Curiosity
 
+
 class TestModels(unittest.TestCase):
     def test_user_model(self):
         user = User(
@@ -38,10 +39,12 @@ class TestModels(unittest.TestCase):
         self.assertEqual(exercise.opciones, '["es","somos","son"]')
 
     def test_curiosity_model(self):
-        curiosity = Curiosity(id=1, categoria="Cultura", texto="El español es hablado por más de 500 millones de personas.")
+        curiosity = Curiosity(id=1, categoria="Cultura",
+                              texto="El español es hablado por más de 500 millones de personas.")
         self.assertEqual(curiosity.id, 1)
         self.assertEqual(curiosity.categoria, "Cultura")
         self.assertEqual(curiosity.texto, "El español es hablado por más de 500 millones de personas.")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -12,9 +12,13 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 def get_db_connection():
-    """Obtener conexión a la base de datos"""
+    """
+    Establece una conexión a la base de datos PostgreSQL utilizando las variables de entorno.
+
+    Returns:
+        psycopg2.extensions.connection: Objeto de conexión a la base de datos.
+    """
     return psycopg2.connect(
         dbname=os.getenv("DB_NAME"),
         user=os.getenv("DB_USER"),
@@ -23,9 +27,19 @@ def get_db_connection():
         port=os.getenv("DB_PORT")
     )
 
-
 def normalize_options(options):
-    """Normaliza el campo opciones para asegurar que sea una lista válida para TEXT[]."""
+    """
+    Normaliza el campo de opciones para asegurar que sea una lista válida para el tipo TEXT[].
+
+    Args:
+        options (str | list): Opciones en formato de lista o cadena.
+
+    Returns:
+        list: Lista de opciones normalizadas.
+
+    Raises:
+        ValueError: Si el formato de las opciones no es soportado.
+    """
     if isinstance(options, list):
         # Si ya es una lista, limpiar elementos
         return [str(opt).strip() for opt in options if str(opt).strip()]
@@ -37,9 +51,20 @@ def normalize_options(options):
         return items
     raise ValueError(f"Formato de opciones no soportado: {options}")
 
-
 def fix_existing_exercises():
-    """Corregir las opciones existentes en la base de datos"""
+    """
+    Corrige las opciones existentes en la base de datos para asegurar que estén normalizadas.
+
+    - Recupera los ejercicios de la base de datos.
+    - Normaliza las opciones y verifica que la respuesta correcta esté dentro del rango.
+    - Actualiza los ejercicios en la base de datos si es necesario.
+
+    Logs:
+        Registra los ejercicios corregidos, errores encontrados y el total de ejercicios.
+
+    Raises:
+        Exception: Si ocurre un error durante la corrección.
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
@@ -79,9 +104,22 @@ def fix_existing_exercises():
         cursor.close()
         conn.close()
 
-
 def import_from_json(json_path):
-    """Importar ejercicios desde un archivo JSON, normalizando de paso"""
+    """
+    Importa ejercicios desde un archivo JSON y los inserta en la base de datos.
+
+    Args:
+        json_path (str): Ruta al archivo JSON que contiene los ejercicios.
+
+    - Normaliza las opciones y valida los datos antes de insertarlos.
+    - Registra los ejercicios insertados y los errores encontrados.
+
+    Logs:
+        Registra los ejercicios insertados, errores encontrados y detalles de los fallos.
+
+    Raises:
+        Exception: Si ocurre un error durante la importación.
+    """
     with open(json_path, 'r', encoding='utf-8') as f:
         ejercicios_data = json.load(f)
 
@@ -131,10 +169,9 @@ def import_from_json(json_path):
         cursor.close()
         conn.close()
 
-
 if __name__ == "__main__":
     # Corregir los ejercicios existentes en la base de datos
     fix_existing_exercises()
 
     # Para importar nuevos ejercicios, descomenta y especifica el path
-    # import_from_json('data/ejercicios.json')
+    import_from_json('data/ejercicios.json')

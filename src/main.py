@@ -5,7 +5,8 @@ import aiogram
 import dotenv
 from aiogram.fsm.storage.memory import MemoryStorage
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from src.handlers import feedback, progress, admin, commands, curiosities, exercises, invitar, logros, nivel, settings, reto, premium
+from src.handlers import feedback, progress, admin, commands, curiosities, exercises, invitar, logros, nivel, settings, \
+    reto, premium
 from src.services.database import DatabaseService
 
 # Configuración de logging
@@ -35,6 +36,7 @@ bot = aiogram.Bot(token=os.getenv('TOKEN'))
 # Inicializar la base de datos
 DatabaseService.initialize()
 
+
 # Función para enviar recordatorios
 async def enviar_recordatorio():
     try:
@@ -43,11 +45,13 @@ async def enviar_recordatorio():
             users = cursor.fetchall()
             for user in users:
                 try:
-                    await bot.send_message(chat_id=user[0], text="⏰ ¡No olvides practicar hoy! Usa /ejercicio para tu práctica diaria.")
+                    await bot.send_message(chat_id=user[0],
+                                           text="⏰ ¡No olvides practicar hoy! Usa /ejercicio para tu práctica diaria.")
                 except Exception as e:
                     logger.error(f"Error enviando recordatorio a {user[0]}: {e}")
     except Exception as e:
         logger.error(f"Error en recordatorio: {e}")
+
 
 async def main():
     dp = aiogram.Dispatcher(storage=MemoryStorage())
@@ -62,7 +66,6 @@ async def main():
     dp.include_router(invitar.router)
     dp.include_router(reto.router)
 
-
     # Configurar el scheduler
     scheduler = AsyncIOScheduler(timezone="UTC")
     scheduler.add_job(enviar_recordatorio, 'cron', hour=9, minute=0)
@@ -73,6 +76,7 @@ async def main():
 
     # Asegurar que el scheduler se detenga al cerrar el bot
     scheduler.shutdown()
+
 
 if __name__ == "__main__":
     try:
