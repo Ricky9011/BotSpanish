@@ -1,85 +1,63 @@
 import asyncio
 import logging
 import os
-import aiogram
-import dotenv
+from src.keyboards.main_menu import MainMenuKeyboard
+from aiogram import Bot, Dispatcher, F
 from aiogram.fsm.storage.memory import MemoryStorage
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from src.handlers import feedback, progress, admin, commands, curiosities, exercises, invitar, logros, nivel, settings, \
-    reto, premium
-from src.services.database import DatabaseService
+from aiogram.types import Message
+from aiogram.filters import Command
+from dotenv import load_dotenv
 
-# Configuración de logging
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Cargar .env explícitamente
-env_path = "/home/ricky/PycharmProjects/BotSpanish/.env"
-if not os.path.exists(env_path):
-    logging.error(f".env file not found at: {env_path}")
-    raise FileNotFoundError(f".env file not found at: {env_path}")
-dotenv.load_dotenv(env_path)
-logging.info(f"Loaded .env from: {dotenv.find_dotenv()}")
-logging.info(f"DB_HOST: {os.getenv('DB_HOST')}")
-logging.info(f"DB_PORT: {os.getenv('DB_PORT')}")
-logging.info(f"DB_NAME: {os.getenv('DB_NAME')}")
-logging.info(f"DB_USER: {os.getenv('DB_USER')}")
-logging.info(f"DB_PASSWORD: {os.getenv('DB_PASSWORD')[:4] if os.getenv('DB_PASSWORD') else None}...")
-logging.info(f"TOKEN: {os.getenv('TOKEN')[:4] if os.getenv('TOKEN') else None}...")
-
-# Inicializar el bot
-bot = aiogram.Bot(token=os.getenv('TOKEN'))
-
-# Inicializar la base de datos
-DatabaseService.initialize()
-
-
-# Función para enviar recordatorios
-async def enviar_recordatorio():
-    try:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("SELECT user_id FROM users")
-            users = cursor.fetchall()
-            for user in users:
-                try:
-                    await bot.send_message(chat_id=user[0],
-                                           text="⏰ ¡No olvides practicar hoy! Usa /ejercicio para tu práctica diaria.")
-                except Exception as e:
-                    logger.error(f"Error enviando recordatorio a {user[0]}: {e}")
-    except Exception as e:
-        logger.error(f"Error en recordatorio: {e}")
 
 
 async def main():
-    dp = aiogram.Dispatcher(storage=MemoryStorage())
-    dp.include_router(commands.router)
-    dp.include_router(exercises.router)
-    dp.include_router(feedback.router)
-    dp.include_router(progress.router)
-    dp.include_router(admin.router)
-    dp.include_router(curiosities.router)
-    dp.include_router(nivel.router)
-    dp.include_router(logros.router)
-    dp.include_router(invitar.router)
-    dp.include_router(reto.router)
+    load_dotenv()
+    token = os.getenv('TOKEN')
 
-    # Configurar el scheduler
-    scheduler = AsyncIOScheduler(timezone="UTC")
-    scheduler.add_job(enviar_recordatorio, 'cron', hour=9, minute=0)
-    scheduler.start()  # Iniciar el scheduler dentro del bucle de eventos
+    if not token:
+        logger.error("❌ Token no encontrado")
+        return
+
+    bot = Bot(token=token)
+    dp = Dispatcher(storage=MemoryStorage())
+
+    from src.services.database import DatabaseService
+    DatabaseService.initialize()
+
+    # Registrar routers normales
+    from src.handlers.commands import router as commands_router
+    from src.handlers.exercises import router as exercises_router
+    from src.handlers.reto import router as reto_router
+    from src.handlers.progress import router as progress_router
+    from src.handlers.curiosities import router as curiosities_router
+    from src.handlers.nivel import router as nivel_router
+    from src.handlers.feedback import router as feedback_router
+    from src.handlers.admin import router as admin_router
+
+    dp.include_router(commands_router)
+    dp.include_router(exercises_router)
+    dp.include_router(reto_router)
+    dp.include_router(progress_router)
+    dp.include_router(curiosities_router)
+    dp.include_router(nivel_router)
+    dp.include_router(feedback_router)
+    dp.include_router(admin_router)
+
+    # Handler específico para respuestas numéricas (por si hay conflicto)
+    @dp.message(F.text.regexp(r"^\d+$"))
+    async def numeric_fallback(message: Message):
+        logger.info(f"Respuesta numérica recibida: {message.text}")
+        # Este handler actuará como fallback si los routers no capturan la respuesta
 
     await bot.delete_webhook(drop_pending_updates=True)
+    logger.info("🚀 Bot híbrido iniciado")
     await dp.start_polling(bot)
-
-    # Asegurar que el scheduler se detenga al cerrar el bot
-    scheduler.shutdown()
-
+# Handler genérico para mensajes no manejados (ÚLTIMO)
+    @dp.message()
+    async def unhandled_message(message: Message):
+        logger.info(f"Mensaje no manejado: {message.text}")
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except (KeyboardInterrupt, SystemExit):
-        logger.info("Bot stopped")
+    asyncio.run(main())

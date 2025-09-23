@@ -1,158 +1,151 @@
+# handlers/reto.py
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from src.services.database import DatabaseService
-from src.services.exercise_service import ExerciseService
 from src.keyboards.inline import exercise_keyboard, retry_keyboard
 import json
 
-# Crear un enrutador para manejar comandos y mensajes relacionados con el reto diario
-router = Router()
+router = Router(name="reto")
 
-def format_exercise_message(exercise):
-    """
-    Formatea el mensaje del reto diario con las opciones disponibles.
 
-    Args:
-        exercise (dict): Diccionario que contiene los datos del ejercicio, incluyendo
-                         la pregunta y las opciones.
+def get_superior_level(current_level: str) -> str:
+    """Devuelve el nivel superior al actual"""
+    levels = ["principiante", "intermedio", "avanzado"]
+    try:
+        current_index = levels.index(current_level)
+        superior_index = min(current_index + 1, len(levels) - 1)
+        return levels[superior_index]
+    except ValueError:
+        return "intermedio"
 
-    Returns:
-        str: Mensaje formateado con la pregunta y las opciones enumeradas.
-    """
-    message_text = f"🏆 *Reto Diario*\n\n{exercise['pregunta']}\n\n"
-    for idx, opcion in enumerate(exercise['opciones']):
-        message_text += f"{idx + 1}. {opcion}\n"
-    return message_text
-
-async def handle_no_challenge(message):
-    """
-    Envía un mensaje al usuario indicando que no hay retos disponibles.
-
-    Args:
-        message (Message): Objeto del mensaje recibido.
-    """
-    await message.answer("❌ No hay retos disponibles en este momento.")
 
 @router.message(Command("reto"))
 @router.callback_query(F.data == "daily_challenge")
 async def daily_challenge(message: Message | CallbackQuery, state: FSMContext):
-    """
-    Maneja el comando "/reto" o la interacción con el botón "daily_challenge".
-
-    Args:
-        message (Message | CallbackQuery): Mensaje o consulta de callback recibido.
-        state (FSMContext): Contexto de la máquina de estados para almacenar datos temporales.
-
-    Obtiene un ejercicio aleatorio de la base de datos, lo guarda en el estado del usuario
-    y envía el reto al usuario.
-    """
     if isinstance(message, CallbackQuery):
         message = message.message
 
     user_id = message.from_user.id
 
-    # Obtener un ejercicio especial para el reto diario
-    with DatabaseService.get_cursor() as cursor:
-        cursor.execute("""
-            SELECT id, categoria, nivel, pregunta, opciones, respuesta_correcta, explicacion
-            FROM ejercicios
-            WHERE nivel = 'intermedio' AND categoria = 'gramática'
-            ORDER BY RANDOM() LIMIT 1
-        """)
-        exercise_tuple = cursor.fetchone()
+    # Importar aquí para evitar circular import
+    from src.services.user_service import UserService
+    from src.services.exercise_service import ExerciseService
 
-    if not exercise_tuple:
-        await handle_no_challenge(message)
-        return
+    # Obtener nivel del usuario y calcular nivel superior para el reto
+    user_level = UserService.get_user_level(user_id)
+    challenge_level = get_superior_level(user_level)
 
-    # Convertir la tupla obtenida en un diccionario
-    exercise = dict(zip(
-        ['id', 'categoria', 'nivel', 'pregunta', 'opciones', 'respuesta_correcta', 'explicacion'],
-        exercise_tuple
-    ))
+    # Obtener ejercicio del nivel superior que el usuario no haya completado
+    exercise = ExerciseService.get_random_exercise(user_id, challenge_level)
 
-    # Convertir las opciones de JSON string a lista si es necesario
-    if isinstance(exercise['opciones'], str):
+    if not exercise:
+        # Si no hay ejercicios del nivel superior, usar el nivel actual
+        exercise = ExerciseService.get_random_exercise(user_id, user_level)
+        if not exercise:
+            await message.answer("🎉 ¡Has completado todos los ejercicios disponibles!")
+            return
+        else:
+            challenge_level = user_level
+
+    # Convertir opciones si es string JSON
+    if isinstance(exercise.opciones, str):
         try:
-            exercise['opciones'] = json.loads(exercise['opciones'])
+            exercise.opciones = json.loads(exercise.opciones)
         except json.JSONDecodeError:
-            pass
+            exercise.opciones = [exercise.opciones]
 
-    # Guardar los datos del reto en el estado del usuario
+    # Formatear mensaje del reto
+    message_text = (
+        f"🏆 *Reto Diario - Nivel {challenge_level.upper()}*\n\n"
+        f"📚 Categoría: {exercise.categoria}\n\n"
+        f"{exercise.pregunta}\n\n"
+    )
+
+    for idx, opcion in enumerate(exercise.opciones):
+        message_text += f"{idx + 1}. {opcion}\n"
+
+    # Guardar en estado
     await state.update_data({
-        "current_challenge": exercise,
+        "current_challenge": exercise.to_dict(),
         "challenge_attempts": 0,
-        "challenge_id": exercise['id'],
-        "challenge_nivel": exercise['nivel'],
-        "challenge_categoria": exercise['categoria']
+        "challenge_id": exercise.id,
+        "challenge_nivel": exercise.nivel,
+        "challenge_categoria": exercise.categoria,
+        "challenge_level": challenge_level
     })
 
-    # Enviar el mensaje del reto al usuario
-    await message.answer(format_exercise_message(exercise), parse_mode="Markdown")
+    await message.answer(message_text, parse_mode="Markdown")
+
 
 @router.message(F.text.regexp(r"^\d+$"))
 async def check_challenge_answer(message: Message, state: FSMContext):
-    """
-    Verifica la respuesta del usuario al reto diario.
-
-    Args:
-        message (Message): Mensaje recibido con la respuesta del usuario.
-        state (FSMContext): Contexto de la máquina de estados para acceder a los datos del reto.
-
-    Valida si la respuesta es correcta, actualiza el progreso del usuario y envía
-    un mensaje de confirmación o error según corresponda.
-    """
     user_id = message.from_user.id
     user_data = await state.get_data()
 
     if "current_challenge" not in user_data:
-        await message.answer("❌ No hay reto activo. Usa /reto para empezar.", parse_mode="Markdown")
+        await message.answer("❌ No hay reto activo. Usa /reto para empezar.")
         return
+
+    # Importar aquí para evitar circular import
+    from src.services.exercise_service import ExerciseService
 
     challenge_data = user_data["current_challenge"]
     selected_option = int(message.text) - 1
+    attempts = user_data.get("challenge_attempts", 0) + 1
 
-    if selected_option == challenge_data["respuesta_correcta"]:
-        # Marcar el ejercicio como completado
+    is_correct = selected_option == challenge_data["respuesta_correcta"]
+
+    if is_correct:
+        # Respuesta correcta - marcar como completado
         ExerciseService.mark_exercise_completed(
             user_id=user_id,
             exercise_id=user_data["challenge_id"],
             nivel=user_data["challenge_nivel"],
-            categoria=user_data["challenge_categoria"]
+            categoria=user_data["challenge_categoria"],
+            is_correct=True,
+            attempts=attempts
         )
 
-        # Obtener una curiosidad aleatoria
-        curiosity = DatabaseService.get_random_curiosity()
-        curiosity_text = curiosity.texto if curiosity else "¡Sigue practicando para aprender más curiosidades!"
+        # MOSTRAR EXPLICACIÓN
+        explanation = challenge_data.get('explicacion', '¡Excelente trabajo! Has dominado este concepto.')
 
-        # Enviar mensaje de éxito al usuario
+        success_message = (
+            f"✅ **¡Correcto!** +1 punto\n\n"
+            f"💡 **Explicación:** {explanation}\n\n"
+            f"🏅 Has completado un reto de nivel {user_data['challenge_level'].upper()}!\n\n"
+            "¿Quieres intentar otro reto?"
+        )
+
         await message.answer(
-            "✅ ¡Correcto! +1 punto en el reto diario\n\n"
-            f"💡 **Curiosidad:** {curiosity_text}\n\n"
-            "¿Quieres intentar con otro reto?",
+            success_message,
             reply_markup=exercise_keyboard(),
             parse_mode="Markdown"
         )
         await state.clear()
     else:
-        # Incrementar el contador de intentos
-        attempts = user_data.get("challenge_attempts", 0) + 1
         await state.update_data({"challenge_attempts": attempts})
 
         if attempts >= 3:
-            # Enviar mensaje de error después de 3 intentos fallidos
+            # Mostrar respuesta correcta y explicación
+            correct_answer = challenge_data['opciones'][challenge_data['respuesta_correcta']]
+            explanation = challenge_data.get('explicacion', 'Sigue practicando para mejorar.')
+
+            failure_message = (
+                f"❌ **La respuesta correcta era:** {correct_answer}\n\n"
+                f"💡 **Explicación:** {explanation}\n\n"
+                "¿Quieres intentar con otro reto?"
+            )
+
             await message.answer(
-                f"❌ La respuesta correcta era: {challenge_data['opciones'][challenge_data['respuesta_correcta']]}\n\n"
-                "¿Quieres intentar con otro reto?",
+                failure_message,
                 reply_markup=retry_keyboard(),
                 parse_mode="Markdown"
             )
             await state.clear()
         else:
-            # Permitir al usuario intentar nuevamente
+            remaining_attempts = 3 - attempts
             await message.answer(
-                f"❌ Incorrecto. Te quedan {3 - attempts} intentos. Intenta nuevamente:",
-                parse_mode="Markdown"
+                f"❌ Incorrecto. Te quedan {remaining_attempts} intentos."
             )

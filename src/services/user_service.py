@@ -1,152 +1,113 @@
+# services/user_service.py
 from src.services.database import DatabaseService
-from src.services.exercise_service import ExerciseService
+from typing import Dict, Any
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class UserService:
-    @classmethod
-    def register_user(cls, user_id: int, username: str) -> None:
+    @staticmethod
+    def register_user(user_id: int, username: str):
+        """Registra un nuevo usuario - VERSIÓN CORREGIDA"""
+        with DatabaseService.get_cursor() as cursor:
+            # Verificar si el usuario ya existe
+            cursor.execute("SELECT user_id FROM users WHERE user_id = %s", (user_id,))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                logger.info(f"Usuario {user_id} ya existe, omitiendo registro")
+                return
+
+            # Insertar usuario con columnas que SÍ existen
+            cursor.execute("""
+                INSERT INTO users (user_id, username, level, exercises, referrals, challenge_score, streak_days, last_practice)
+                VALUES (%s, %s, 'principiante', 0, 0, 0, 0, NULL)
+            """, (user_id, username))
+            logger.info(f"Nuevo usuario registrado: {user_id}")
+
+    @staticmethod
+    def get_user_stats(user_id: int) -> Dict[str, Any]:
+        """Obtiene estadísticas del usuario desde la tabla user_ejercicios"""
+        with DatabaseService.get_cursor() as cursor:
+            # Obtener nivel del usuario
+            cursor.execute("SELECT level FROM users WHERE user_id = %s", (user_id,))
+            result = cursor.fetchone()
+            if not result:
+                return None
+
+            level = result[0]
+
+            # Contar ejercicios completados desde user_ejercicios
+            cursor.execute("""
+                SELECT COUNT(*) 
+                FROM user_ejercicios 
+                WHERE user_id = %s AND is_correct = true
+            """, (user_id,))
+            exercises_completed = cursor.fetchone()[0]
+
+            # Obtener última práctica
+            cursor.execute("""
+                SELECT MAX(completed_at) 
+                FROM user_ejercicios 
+                WHERE user_id = %s
+            """, (user_id,))
+            last_practice_result = cursor.fetchone()
+            last_practice = last_practice_result[0] if last_practice_result[0] else None
+
+            # Obtener estadísticas por nivel
+            cursor.execute("""
+                SELECT nivel, COUNT(*) 
+                FROM user_ejercicios 
+                WHERE user_id = %s AND is_correct = true
+                GROUP BY nivel
+            """, (user_id,))
+            exercises_by_level = {row[0]: row[1] for row in cursor.fetchall()}
+
+            # Obtener estadísticas por categoría
+            cursor.execute("""
+                SELECT categoria, COUNT(*) 
+                FROM user_ejercicios 
+                WHERE user_id = %s AND is_correct = true
+                GROUP BY categoria
+            """, (user_id,))
+            exercises_by_category = {row[0]: row[1] for row in cursor.fetchall()}
+
+            # Calcular racha (días consecutivos con al menos un ejercicio correcto)
+            cursor.execute("""
+                SELECT COUNT(DISTINCT DATE(completed_at))
+                FROM user_ejercicios 
+                WHERE user_id = %s 
+                AND is_correct = true
+                AND completed_at >= CURRENT_DATE - INTERVAL '7 days'
+            """, (user_id,))
+            streak_days = cursor.fetchone()[0]
+
+            return {
+                "level": level,
+                "exercises": exercises_completed,
+                "streak_days": streak_days,
+                "referrals": 0,  # Placeholder
+                "challenge_score": 0,  # Placeholder
+                "last_practice": last_practice,
+                "exercises_by_level": exercises_by_level,
+                "exercises_by_category": exercises_by_category
+            }
+
+    @staticmethod
+    def set_user_level(user_id: int, level: str):
+        """Actualiza el nivel del usuario"""
         with DatabaseService.get_cursor() as cursor:
             cursor.execute("""
-                INSERT INTO users (user_id, username, level, exercises, referrals, challenge_score, streak_days)
-                VALUES (%s, %s, 'principiante', 0, 0, 0, 0)
-                ON CONFLICT (user_id) DO NOTHING
-            """, (user_id, username))
+                UPDATE users 
+                SET level = %s 
+                WHERE user_id = %s
+            """, (level, user_id))
 
-    @classmethod
-    def get_user_level(cls, user_id: int) -> str:
+    @staticmethod
+    def get_user_level(user_id: int) -> str:
+        """Obtiene el nivel del usuario"""
         with DatabaseService.get_cursor() as cursor:
             cursor.execute("SELECT level FROM users WHERE user_id = %s", (user_id,))
             result = cursor.fetchone()
             return result[0] if result else "principiante"
-
-    @classmethod
-    def update_level(cls, user_id: int, new_level: str) -> None:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("UPDATE users SET level = %s WHERE user_id = %s", (new_level, user_id))
-
-    @classmethod
-    def block_user(cls, user_id: int) -> None:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("INSERT INTO blocked_users (user_id) VALUES (%s) ON CONFLICT DO NOTHING", (user_id,))
-
-    @classmethod
-    def is_blocked(cls, user_id: int) -> bool:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("SELECT 1 FROM blocked_users WHERE user_id = %s", (user_id,))
-            return cursor.fetchone() is not None
-
-    @classmethod
-    def set_reminder(cls, user_id: int, reminder_time: str, timezone: str) -> None:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("INSERT INTO user_reminders (user_id, reminder_time, timezone) VALUES (%s, %s, "
-                           "%s) ON CONFLICT (user_id) DO UPDATE SET reminder_time = %s, timezone = %s", (user_id,
-                                                                                                         reminder_time,
-                                                                                                         timezone,
-                                                                                                         reminder_time,
-                                                                                                         timezone))
-
-    @classmethod
-    def get_achievements(cls, user_id: int) -> list:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("""
-                SELECT a.name, a.description, a.icon, ua.earned_at
-                FROM user_achievements ua
-                JOIN achievements a ON ua.achievement_id = a.achievement_id
-                WHERE ua.user_id = %s
-            """, (user_id,))
-            return cursor.fetchall()
-
-    @classmethod
-    def get_completed_exercises(cls, user_id: int) -> list[int]:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("""
-                SELECT completed_exercises
-                FROM users
-                WHERE user_id = %s
-            """, (user_id,))
-            result = cursor.fetchone()
-            if result and result[0]:
-                return [int(x) for x in result[0].split(",") if x]
-            return []
-
-    @classmethod
-    def update_user_stats(cls, user_id: int) -> None:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("""
-                    UPDATE users
-                    SET exercises = exercises + 1,
-                        streak_days = CASE
-                            WHEN last_practice IS NULL OR last_practice < CURRENT_DATE - INTERVAL '1 day'
-                            THEN 1
-                            ELSE streak_days + 1
-                        END,
-                        last_practice = CURRENT_TIMESTAMP
-                    WHERE user_id = %s
-                """, (user_id,))
-
-    # user_service.py - Modifica el método get_user_stats
-    @staticmethod
-    def get_user_stats(user_id: int) -> dict:
-        """
-        Obtiene las estadísticas del usuario
-        """
-        with DatabaseService.get_cursor() as cursor:
-            # Datos básicos del usuario
-            cursor.execute("""
-                SELECT level, referrals, challenge_score, streak_days, last_practice,
-                       (SELECT COUNT(*) FROM user_ejercicios WHERE user_id = %s) as exercises_completed
-                FROM users 
-                WHERE user_id = %s
-            """, (user_id, user_id))
-
-            result = cursor.fetchone()
-
-            if result:
-                # Obtener estadísticas por nivel y categoría directamente
-                cursor.execute("""
-                    SELECT nivel, COUNT(*) 
-                    FROM user_ejercicios 
-                    WHERE user_id = %s 
-                    GROUP BY nivel
-                """, (user_id,))
-                by_level = {row[0]: row[1] for row in cursor.fetchall()}
-
-                cursor.execute("""
-                    SELECT categoria, COUNT(*) 
-                    FROM user_ejercicios 
-                    WHERE user_id = %s 
-                    GROUP BY categoria
-                """, (user_id,))
-                by_category = {row[0]: row[1] for row in cursor.fetchall()}
-
-                return {
-                    'level': result[0],
-                    'referrals': result[1],
-                    'challenge_score': result[2],
-                    'streak_days': result[3],
-                    'last_practice': result[4],
-                    'exercises': result[5],  # Usamos el contador directo de la consulta
-                    'exercises_by_level': by_level,
-                    'exercises_by_category': by_category
-                }
-            else:
-                # Si el usuario no existe, crearlo y devolver estadísticas por defecto
-                UserService.register_user(user_id, "")
-                return {
-                    'level': 'principiante',
-                    'referrals': 0,
-                    'challenge_score': 0,
-                    'streak_days': 0,
-                    'last_practice': None,
-                    'exercises': 0,
-                    'exercises_by_level': {},
-                    'exercises_by_category': {}
-                }
-    @classmethod
-    def set_user_level(cls, user_id: int, level: str) -> None:
-        with DatabaseService.get_cursor() as cursor:
-            cursor.execute("""
-                    UPDATE users
-                    SET level = %s
-                    WHERE user_id = %s
-                """, (level, user_id))

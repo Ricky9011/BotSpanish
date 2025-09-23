@@ -11,7 +11,7 @@ from src.utils.exercise_utils import validate_exercises_json, load_exercises_fro
 logger = logging.getLogger(__name__)
 
 # Creación de un router para manejar comandos específicos
-router = Router()
+router = Router(name="admin")
 
 def is_admin(user_id: int) -> bool:
     """

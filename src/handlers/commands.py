@@ -1,14 +1,12 @@
+# handlers/commands.py - CON IMPORT CORRECTO
+import logging
 from aiogram import Router, F
-from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from aiogram.filters import Command
-
-from src.handlers.feedback import cmd_opinion
 from src.services.user_service import UserService
-from src.keyboards.main_menu import MainMenuKeyboard
-
-router = Router()
-
+from src.keyboards.main_menu import MainMenuKeyboard  # ✅ IMPORT CORRECTO
+logger = logging.getLogger(__name__)
+router = Router(name="commands")
 
 @router.message(Command("start"))
 async def cmd_start(message: Message):
@@ -25,28 +23,38 @@ async def cmd_start(message: Message):
         "Usa /ayuda para ver los comandos disponibles."
     )
 
-    # Enviar mensaje con teclado principal
+    # Enviar mensaje con teclado principal - ✅ FORMA CORRECTA
     await message.answer(
         welcome_text,
-        reply_markup=await MainMenuKeyboard.build()
+        reply_markup=MainMenuKeyboard.main_menu()  # ✅ LLAMADA CORRECTA
     )
-
 
 @router.message(Command("ayuda"))
 async def cmd_help(message: Message):
     help_text = """
-    📖 **Comandos Disponibles:**
-    /ejercicio - Ejercicio diario personalizado
-    /reto - ¡Compite en el desafío semanal!
-    /progreso - Tu avance y estadísticas
-    /nivel - Cambiar nivel (principiante/intermedio/avanzado)
-    /invitar - Invita amigos y gana recompensas
-    /premium - Información sobre contenido exclusivo
-    /opinion - Enviar sugerencias o reportar errores
-    /logros - Ver tus logros obtenidos
-    """
+📖 **Comandos Disponibles:**
+
+**📝 Práctica:**
+/ejercicio - Ejercicio personalizado según tu nivel
+/reto - Reto diario de nivel superior
+
+**📊 Progreso:**
+/progreso - Tu avance y estadísticas
+/logros - Logros obtenidos
+
+**⚙️ Configuración:**
+/nivel - Cambiar nivel (principiante/intermedio/avanzado)
+/opinion - Enviar sugerencias o reportar errores
+
+**🎮 Extras:**
+/curiosidad - Curiosidades del español
+/invitar - Invita amigos y gana recompensas
+"""
     await message.answer(help_text)
 
-
-# Add at the end of commands.py
-__all__ = ['cmd_start', 'cmd_help']
+@router.message(F.text == "Volver al menú")
+async def back_to_menu(message: Message):
+    await message.answer(
+        "🏠 Volviendo al menú principal...",
+        reply_markup=MainMenuKeyboard.main_menu()  # ✅ Misma llamada
+    )

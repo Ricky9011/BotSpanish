@@ -1,30 +1,50 @@
+# handlers/exercises.py - CON TECLADO DE OPCIONES
 from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from typing import Optional
-from src.models.exercise import Exercise
-from src.services.database import DatabaseService
-from src.services.exercise_service import ExerciseService
-from src.services.user_service import UserService
-from src.keyboards.inline import exercise_keyboard, retry_keyboard
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-router = Router()
+from src.keyboards.main_menu import MainMenuKeyboard
+from src.services.user_service import UserService
+from src.services.exercise_service import ExerciseService
+from src.keyboards.inline import exercise_keyboard, retry_keyboard
+import json
+import logging
+
+logger = logging.getLogger(__name__)
+router = Router(name="exercises")
+
+
+def create_answer_keyboard(options: list) -> ReplyKeyboardMarkup:
+    """Crea un teclado con las opciones de respuesta"""
+    builder = ReplyKeyboardBuilder()
+
+    # Agregar cada opción como botón
+    for option in options:
+        builder.add(KeyboardButton(text=option))
+
+    # Ajustar disposición (2 columnas)
+    builder.adjust(2)
+
+    # Agregar botón de cancelar
+    builder.row(KeyboardButton(text="❌ Cancelar ejercicio"))
+
+    return builder.as_markup(
+        resize_keyboard=True,
+        one_time_keyboard=True  # El teclado se oculta después de usar
+    )
 
 
 @router.message(Command("ejercicio"))
 @router.message(F.text == "📝 Ejercicio")
 async def cmd_exercise(message: Message, state: FSMContext):
     user_id = message.from_user.id
-
-    # Obtener nivel del usuario
     user_level = UserService.get_user_level(user_id)
 
-    # Obtener ejercicio aleatorio no completado
     exercise = ExerciseService.get_random_exercise(user_id, user_level)
 
     if not exercise:
-        # Verificar si hay ejercicios de otros niveles
         all_levels = ["principiante", "intermedio", "avanzado"]
         other_levels = [lvl for lvl in all_levels if lvl != user_level]
 
@@ -41,6 +61,7 @@ async def cmd_exercise(message: Message, state: FSMContext):
             await message.answer(
                 "🎉 ¡Felicidades! Has completado todos los ejercicios disponibles.\n\n"
                 "Pronto añadiremos más contenido. ¡Mantente atento!",
+                reply_markup=MainMenuKeyboard.main_menu(),
                 parse_mode="Markdown"
             )
             return
@@ -52,73 +73,100 @@ async def cmd_exercise(message: Message, state: FSMContext):
             )
             exercise = alternative_exercise
 
-    # Formatear mensaje
+    if isinstance(exercise.opciones, str):
+        try:
+            exercise.opciones = json.loads(exercise.opciones)
+        except json.JSONDecodeError:
+            exercise.opciones = [exercise.opciones]
+
     message_text = (
         f"📚 *Ejercicio de {exercise.categoria} ({exercise.nivel})*\n\n"
         f"{exercise.pregunta}\n\n"
+        "💡 **Selecciona tu respuesta:**"
     )
 
-    for idx, opcion in enumerate(exercise.opciones):
-        message_text += f"{idx + 1}. {opcion}\n"
+    # Crear teclado con opciones
+    answer_keyboard = create_answer_keyboard(exercise.opciones)
 
-    # Guardar en estado con toda la información necesaria
     await state.update_data({
         "current_exercise": exercise.to_dict(),
         "attempts": 0,
         "exercise_id": exercise.id,
         "exercise_nivel": exercise.nivel,
-        "exercise_categoria": exercise.categoria
+        "exercise_categoria": exercise.categoria,
+        "answer_options": exercise.opciones  # Guardar opciones para validar
     })
 
-    await message.answer(message_text, parse_mode="Markdown")
+    await message.answer(message_text, parse_mode="Markdown", reply_markup=answer_keyboard)
 
 
-@router.message(F.text.regexp(r"^\d+$"))
-async def check_answer(message: Message, state: FSMContext):
+@router.message(F.text == "❌ Cancelar ejercicio")
+async def cancel_exercise(message: Message, state: FSMContext):
+    """Cancelar el ejercicio actual y volver al menú principal"""
+    await state.clear()
+    await message.answer(
+        "❌ Ejercicio cancelado.",
+        reply_markup=MainMenuKeyboard.main_menu()
+    )
+
+
+@router.message(F.text)
+async def handle_text_answer(message: Message, state: FSMContext):
+    """Manejar respuestas de texto (selección de opciones)"""
     user_id = message.from_user.id
     user_data = await state.get_data()
 
     # Verificar si hay un ejercicio activo
     if "current_exercise" not in user_data:
-        await message.answer("❌ No hay ejercicio activo. Usa /ejercicio para empezar.", parse_mode="Markdown")
+        # Si no hay ejercicio activo, ignorar o mostrar mensaje
         return
 
-    exercise_data = user_data["current_exercise"]
-    selected_option = int(message.text) - 1
+    # Obtener las opciones de respuesta
+    answer_options = user_data.get("answer_options", [])
+    selected_text = message.text
 
-    # Verificar respuesta
-    if selected_option == exercise_data["respuesta_correcta"]:
-        # Respuesta correcta - usar la nueva tabla user_ejercicios
+    # Verificar si el texto seleccionado es una de las opciones válidas
+    if selected_text not in answer_options:
+        await message.answer("❌ Por favor, selecciona una de las opciones proporcionadas.")
+        return
+
+    # Encontrar el índice de la opción seleccionada
+    selected_option = answer_options.index(selected_text)
+    exercise_data = user_data["current_exercise"]
+    attempts = user_data.get("attempts", 0) + 1
+
+    is_correct = selected_option == exercise_data["respuesta_correcta"]
+
+    if is_correct:
         ExerciseService.mark_exercise_completed(
             user_id=user_id,
             exercise_id=user_data["exercise_id"],
             nivel=user_data["exercise_nivel"],
-            categoria=user_data["exercise_categoria"]
+            categoria=user_data["exercise_categoria"],
+            is_correct=True,
+            attempts=attempts
         )
 
-        # Obtener una curiosidad aleatoria
-        curiosity_obj = DatabaseService.get_random_curiosity()
-        if curiosity_obj:
-            curiosity_text = curiosity_obj.texto
-        else:
-            curiosity_text = "¡Sigue practicando para aprender más curiosidades!"
+        explanation = exercise_data.get('explicacion', '¡Excelente trabajo! Has acertado la respuesta.')
 
-        # Mensaje de éxito
         await message.answer(
-            "✅ ¡Correcto! +1 punto\n\n"
-            f"💡 **Curiosidad:** {curiosity_text}\n\n"
+            f"✅ **¡Correcto!** +1 punto\n\n"
+            f"💡 **Explicación:** {explanation}\n\n"
             "¿Quieres continuar practicando?",
             reply_markup=exercise_keyboard(),
             parse_mode="Markdown"
         )
+        await state.clear()
     else:
-        # Respuesta incorrecta
-        attempts = user_data.get("attempts", 0) + 1
         await state.update_data({"attempts": attempts})
 
         if attempts >= 3:
+            correct_answer = answer_options[exercise_data["respuesta_correcta"]]
+            explanation = exercise_data.get('explicacion', 'Sigue practicando para mejorar.')
+
             await message.answer(
-                f"❌ La respuesta correcta era: {exercise_data['opciones'][exercise_data['respuesta_correcta']]}\n\n"
+                f"❌ **La respuesta correcta era:** {correct_answer}\n\n"
+                f"💡 **Explicación:** {explanation}\n\n"
                 "¿Quieres intentar con otro ejercicio?",
                 reply_markup=retry_keyboard(),
                 parse_mode="Markdown"
@@ -126,11 +174,12 @@ async def check_answer(message: Message, state: FSMContext):
             await state.clear()
         else:
             await message.answer(
-                "❌ Incorrecto. Intenta nuevamente:",
-                reply_markup=retry_keyboard(),
-                parse_mode="Markdown"
+                f"❌ Incorrecto. Intenta nuevamente (intento {attempts}/3):",
+                reply_markup=create_answer_keyboard(answer_options)  # Mostrar opciones nuevamente
             )
 
+
+# Mantener los callbacks para inline keyboard (siguiente ejercicio, reintentar, etc.)
 @router.callback_query(F.data == "next_exercise")
 async def next_exercise(callback: CallbackQuery, state: FSMContext):
     await state.clear()
@@ -144,11 +193,14 @@ async def retry_exercise(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
 
 
-# exercises.py - En el callback show_progress_callback
 @router.callback_query(F.data == "show_progress")
 async def show_progress_callback(callback: CallbackQuery):
     user_id = callback.from_user.id
     stats = UserService.get_user_stats(user_id)
+
+    if not stats:
+        await callback.message.answer("❌ No se encontraron datos de progreso.")
+        return
 
     progress_text = (
         f"📊 **Tu Progreso**\n\n"
@@ -159,19 +211,17 @@ async def show_progress_callback(callback: CallbackQuery):
         f"🔥 Racha actual: {stats['streak_days']} días\n"
     )
 
-    # Añadir estadísticas por nivel si existen
-    if stats['exercises_by_level']:
+    if stats.get('exercises_by_level'):
         progress_text += "\n📈 **Por nivel:**\n"
         for nivel, count in stats['exercises_by_level'].items():
             progress_text += f"  - {nivel.capitalize()}: {count}\n"
 
-    # Añadir estadísticas por categoría si existen
-    if stats['exercises_by_category']:
+    if stats.get('exercises_by_category'):
         progress_text += "\n📚 **Por categoría:**\n"
         for categoria, count in stats['exercises_by_category'].items():
             progress_text += f"  - {categoria.capitalize()}: {count}\n"
 
-    if stats['last_practice']:
+    if stats.get('last_practice'):
         progress_text += f"\n⏰ Última práctica: {stats['last_practice'].strftime('%Y-%m-%d %H:%M')}\n"
 
     await callback.message.answer(progress_text, parse_mode="Markdown")

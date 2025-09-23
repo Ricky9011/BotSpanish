@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Router, F
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import Command
@@ -5,11 +7,15 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from src.services.user_service import UserService
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from src.keyboards.main_menu import MainMenuKeyboard
 import pytest
-
+from aiogram import Router, F
+from aiogram.types import Message
+from aiogram.filters import Command
+from src.services.user_service import UserService
+from src.keyboards.main_menu import MainMenuKeyboard  # ✅ IMPORT CORRECTO
+logger = logging.getLogger(__name__)
 # Create a router instance to handle commands and messages
-router = Router()
+router = Router(name="nivel")
 
 # Define a state group for managing user levels
 class LevelStates(StatesGroup):

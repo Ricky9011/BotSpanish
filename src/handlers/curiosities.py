@@ -1,16 +1,20 @@
+import logging
 from aiogram import Router, F
-from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-
+from aiogram.filters import Command
 from src.services.database import DatabaseService
-from src.utils.helpers import sanitize_text
+from src.keyboards.main_menu import MainMenuKeyboard  # ✅ IMPORT CORRECTO
+from src.utils import sanitize_text
 
-router = Router()
+logger = logging.getLogger(__name__)
+router = Router(name="curiosities")
 
 
 @router.message(Command("curiosidad"))
 @router.message(F.text == "📚 Curiosidad")
-async def cmd_curiosidad(message: Message):
+async def cmd_curiosidad(message: Message, state: FSMContext):
+    await state.clear()
     curiosity = DatabaseService.get_random_curiosity()
 
     if not curiosity:
@@ -23,3 +27,9 @@ async def cmd_curiosidad(message: Message):
     )
 
     await message.answer(message_text, parse_mode="Markdown")
+    await message.answer(
+        "Puedes ver más curiosidades usando /curiosidad o el botón de abajo.",
+        reply_markup=MainMenuKeyboard().main_menu(),
+        parse_mode="Markdown"
+    )
+__all__ = ['cmd_curiosidad']

@@ -1,15 +1,18 @@
 from aiogram import Router, F
+from aiogram.fsm import state
 from aiogram.types import Message
 from aiogram.filters import Command
 
 from src.services.user_service import UserService
 
-router = Router()
+router = Router(name="progress")
 
 
 @router.message(Command("progreso"))
 @router.message(F.text == "📊 Progreso")
+@router.message(F.text == "📊 Mis estadísticas") # ¡Añade este!
 async def cmd_progress(message: Message):
+    await state.clear() # << AÑADIDO: Limpia el estado del usuario
     user_id = message.from_user.id
     stats = UserService.get_user_stats(user_id)
 
