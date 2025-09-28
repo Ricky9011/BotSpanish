@@ -1,11 +1,9 @@
 import asyncio
 import logging
 import os
-from src.keyboards.main_menu import MainMenuKeyboard
 from aiogram import Bot, Dispatcher, F
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import Message
-from aiogram.filters import Command
 from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
@@ -37,13 +35,18 @@ async def main():
     from src.handlers.admin import router as admin_router
 
     dp.include_router(commands_router)
-    dp.include_router(exercises_router)
-    dp.include_router(reto_router)
-    dp.include_router(progress_router)
-    dp.include_router(curiosities_router)
+
     dp.include_router(nivel_router)
     dp.include_router(feedback_router)
+
+    dp.include_router(reto_router)
+    dp.include_router(exercises_router)
+    dp.include_router(curiosities_router)
     dp.include_router(admin_router)
+
+    dp.include_router(progress_router)
+
+
 
     # Handler específico para respuestas numéricas (por si hay conflicto)
     @dp.message(F.text.regexp(r"^\d+$"))

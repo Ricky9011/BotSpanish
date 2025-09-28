@@ -32,6 +32,3 @@ class MainMenuKeyboard:
     def main_menu() -> ReplyKeyboardMarkup:
         return main_menu()
 
-    @staticmethod
-    async def build() -> ReplyKeyboardMarkup:
-        return main_menu()
