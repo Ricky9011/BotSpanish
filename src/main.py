@@ -33,6 +33,7 @@ async def main():
     from src.handlers.nivel import router as nivel_router
     from src.handlers.feedback import router as feedback_router
     from src.handlers.admin import router as admin_router
+    from src.handlers.callbacks import router as callbacks_router
 
     dp.include_router(commands_router)
 
@@ -45,6 +46,7 @@ async def main():
     dp.include_router(admin_router)
 
     dp.include_router(progress_router)
+    dp.include_router(callbacks_router)
 
 
 

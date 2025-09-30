@@ -47,11 +47,11 @@ async def cmd_level(message: Message, state: FSMContext):
 async def set_level(message: Message, state: FSMContext):
     """Maneja la selección de nivel"""
     level = message.text.lower()
-    valid_levels = ["principiante", "intermedio", "avanzado", "menú principal"]
+    valid_levels = ["principiante", "intermedio", "avanzado", "🏠 menú principal"]
     user_id = message.from_user.id
 
     if level in valid_levels:
-        if level == "menú principal":
+        if level == "🏠 menú principal":
             # Volver al menú principal
             await message.answer(
                 "🏠 Volviendo al menú principal...",
@@ -69,7 +69,7 @@ async def set_level(message: Message, state: FSMContext):
         # Nivel no válido
         await message.answer(
             "❌ Nivel no válido. Por favor selecciona:\n\n"
-            "• Principiante\n• Intermedio\n• Avanzado\n• Menú Principal",
+            "• Principiante\n• Intermedio\n• Avanzado\n• 🏠 menú principal",
             reply_markup=level_keyboard()
         )
         return  # No limpiar el estado para permitir reintento

@@ -66,7 +66,7 @@ def curiosity_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="🔍 Otra curiosidad", callback_data="show_curiosity")
     builder.button(text="📝 Hacer ejercicio", callback_data="next_exercise")
-    builder.button(text="🏠 Menú principal", callback_data="main_menu")
+    builder.button(text="🏠 Menú Principal", callback_data="main_menu")
     builder.adjust(1)
     return builder.as_markup()
 
