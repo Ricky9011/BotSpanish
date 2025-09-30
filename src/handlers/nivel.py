@@ -1,5 +1,4 @@
 import logging
-
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
@@ -7,92 +6,72 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
 from src.services.user_service import UserService
-from src.keyboards.main_menu import MainMenuKeyboard  # ✅ IMPORT CORRECTO
+from src.keyboards.main_menu import MainMenuKeyboard
 
 logger = logging.getLogger(__name__)
 
-# Create a router instance to handle commands and messages
 router = Router(name="nivel")
 
-# Define a state group for managing user levels
 class LevelStates(StatesGroup):
-    # State for waiting for the user to select a level
     waiting_level = State()
 
-# Function to create a keyboard for level selection
 def level_keyboard() -> ReplyKeyboardMarkup:
-    """
-    Creates a ReplyKeyboardMarkup for selecting user levels.
-
-    Returns:
-        ReplyKeyboardMarkup: A keyboard with buttons for "Principiante", "Intermedio", and "Avanzado".
-    """
+    """Teclado para selección de nivel"""
     kb = ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="Principiante"), KeyboardButton(text="Intermedio")],
-            [KeyboardButton(text="Avanzado")]
+            [KeyboardButton(text="Avanzado"), KeyboardButton(text="🏠 Menú Principal")]
         ],
         resize_keyboard=True
     )
     return kb
 
-# Command handler for "/nivel" or "Cambiar de nivel"
+# 🔥 CORRECCIÓN: Cambiar el filtro para que coincida con el texto del botón
 @router.message(Command("nivel"))
-@router.message(F.text == "Cambiar de nivel")
+@router.message(F.text == "⚙️ Cambiar Nivel")  # ✅ Texto exacto del botón
 async def cmd_level(message: Message, state: FSMContext):
     """
-    Handles the "/nivel" command or "Cambiar de nivel" message.
-
-    Args:
-        message (Message): The incoming message object.
-        state (FSMContext): The finite state machine context for managing user states.
-
-    Sends a message with a keyboard for level selection and sets the state to waiting_level.
+    Handles the "/nivel" command or "⚙️ Cambiar Nivel" message.
     """
     await message.answer(
-        "📊 Puedes seleccionar un nivel directamente o usar el menú:",
-        reply_markup=ReplyKeyboardMarkup(
-            keyboard=[
-                [KeyboardButton(text="Principiante"), KeyboardButton(text="Intermedio")],
-                [KeyboardButton(text="Avanzado"), KeyboardButton(text="Volver al menú")]
-            ],
-            resize_keyboard=True
-        ),
+        "🎯 *Selecciona tu nivel de español:*\n\n"
+        "• **Principiante**: Conceptos básicos\n"
+        "• **Intermedio**: Frases y gramática\n"  
+        "• **Avanzado**: Expresiones complejas",
+        reply_markup=level_keyboard(),
         parse_mode="Markdown"
     )
     await state.set_state(LevelStates.waiting_level)
 
-# Handler for processing the selected level
 @router.message(LevelStates.waiting_level)
 async def set_level(message: Message, state: FSMContext):
-    """
-    Handles the user's level selection.
-
-    Args:
-        message (Message): The incoming message object containing the user's level choice.
-        state (FSMContext): The finite state machine context for managing user states.
-
-    Validates the selected level, updates the user's level in the database, and sends a confirmation message.
-    If the level is invalid, prompts the user to select a valid level.
-    """
+    """Maneja la selección de nivel"""
     level = message.text.lower()
-    valid_levels = ["principiante", "intermedio", "avanzado"]
+    valid_levels = ["principiante", "intermedio", "avanzado", "menú principal"]
     user_id = message.from_user.id
 
     if level in valid_levels:
-        # Update the user's level in the database
-        UserService.set_user_level(user_id, level)
-        await message.answer(
-            f"✅ Nivel cambiado a *{level}*.",
-            parse_mode="Markdown",
-            reply_markup=await MainMenuKeyboard.build()
-        )
+        if level == "menú principal":
+            # Volver al menú principal
+            await message.answer(
+                "🏠 Volviendo al menú principal...",
+                reply_markup=MainMenuKeyboard.main_menu()
+            )
+        else:
+            # Actualizar nivel del usuario
+            UserService.set_user_level(user_id, level)
+            await message.answer(
+                f"✅ *Nivel actualizado a: {level.capitalize()}*",
+                parse_mode="Markdown",
+                reply_markup=MainMenuKeyboard.main_menu()
+            )
     else:
-        # Prompt the user to select a valid level
+        # Nivel no válido
         await message.answer(
-            "❌ Nivel no válido. Elige: Principiante, Intermedio, Avanzado.",
-            reply_markup=level_keyboard(),
-            parse_mode="Markdown"
+            "❌ Nivel no válido. Por favor selecciona:\n\n"
+            "• Principiante\n• Intermedio\n• Avanzado\n• Menú Principal",
+            reply_markup=level_keyboard()
         )
-    # Clear the state after processing the level
+        return  # No limpiar el estado para permitir reintento
+
     await state.clear()

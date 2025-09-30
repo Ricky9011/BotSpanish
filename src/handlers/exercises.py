@@ -178,7 +178,7 @@ async def handle_incorrect_answer(
             exercise_data.get('explicacion', 'Sigue practicando para mejorar.')
         )
 
-        # Marcar como completado (incorrecto)
+        # Marcar como completado
         ExerciseService.mark_exercise_completed(
             user_id=message.from_user.id,
             exercise_id=user_data["exercise_id"],

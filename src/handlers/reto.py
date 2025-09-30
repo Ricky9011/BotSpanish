@@ -1,14 +1,13 @@
-# handlers/reto.py
+# handlers/reto.py - VERSIÓN MEJORADA
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from src.services.database import DatabaseService
-from src.keyboards.inline import exercise_keyboard, retry_keyboard
+from src.services.answer_service import verify_answer_logic
+from src.keyboards.inline import result_keyboard, exercise_keyboard
 import json
 
 router = Router(name="reto")
-
 
 def get_superior_level(current_level: str) -> str:
     """Devuelve el nivel superior al actual"""
@@ -20,12 +19,12 @@ def get_superior_level(current_level: str) -> str:
     except ValueError:
         return "intermedio"
 
-
 @router.message(Command("reto"))
 @router.callback_query(F.data == "daily_challenge")
 async def daily_challenge(message: Message | CallbackQuery, state: FSMContext):
     if isinstance(message, CallbackQuery):
         message = message.message
+        await message.edit_reply_markup(reply_markup=None)  # Limpiar teclado anterior
 
     user_id = message.from_user.id
 
@@ -37,7 +36,7 @@ async def daily_challenge(message: Message | CallbackQuery, state: FSMContext):
     user_level = UserService.get_user_level(user_id)
     challenge_level = get_superior_level(user_level)
 
-    # Obtener ejercicio del nivel superior que el usuario no haya completado
+    # Obtener ejercicio del nivel superior
     exercise = ExerciseService.get_random_exercise(user_id, challenge_level)
 
     if not exercise:
@@ -56,6 +55,17 @@ async def daily_challenge(message: Message | CallbackQuery, state: FSMContext):
         except json.JSONDecodeError:
             exercise.opciones = [exercise.opciones]
 
+    # Crear diccionario de datos del ejercicio
+    challenge_data = {
+        "id": exercise.id,
+        "categoria": exercise.categoria,
+        "nivel": exercise.nivel,
+        "pregunta": exercise.pregunta,
+        "opciones": exercise.opciones,
+        "respuesta_correcta": exercise.respuesta_correcta,
+        "explicacion": exercise.explicacion
+    }
+
     # Formatear mensaje del reto
     message_text = (
         f"🏆 *Reto Diario - Nivel {challenge_level.upper()}*\n\n"
@@ -68,7 +78,7 @@ async def daily_challenge(message: Message | CallbackQuery, state: FSMContext):
 
     # Guardar en estado
     await state.update_data({
-        "current_challenge": exercise.to_dict(),
+        "current_challenge": challenge_data,
         "challenge_attempts": 0,
         "challenge_id": exercise.id,
         "challenge_nivel": exercise.nivel,
@@ -77,7 +87,6 @@ async def daily_challenge(message: Message | CallbackQuery, state: FSMContext):
     })
 
     await message.answer(message_text, parse_mode="Markdown")
-
 
 @router.message(F.text.regexp(r"^\d+$"))
 async def check_challenge_answer(message: Message, state: FSMContext):
@@ -88,64 +97,41 @@ async def check_challenge_answer(message: Message, state: FSMContext):
         await message.answer("❌ No hay reto activo. Usa /reto para empezar.")
         return
 
-    # Importar aquí para evitar circular import
-    from src.services.exercise_service import ExerciseService
-
     challenge_data = user_data["current_challenge"]
-    selected_option = int(message.text) - 1
-    attempts = user_data.get("challenge_attempts", 0) + 1
+    selected_option = int(message.text) - 1  # Convertir a índice 0-based
 
-    is_correct = selected_option == challenge_data["respuesta_correcta"]
+    # Usar la lógica compartida
+    result = await verify_answer_logic(
+        message=message,
+        state=state,
+        selected_answer=selected_option,
+        exercise_data=challenge_data,
+        context="challenge"
+    )
 
-    if is_correct:
-        # Respuesta correcta - marcar como completado
-        ExerciseService.mark_exercise_completed(
-            user_id=user_id,
-            exercise_id=user_data["challenge_id"],
-            nivel=user_data["challenge_nivel"],
-            categoria=user_data["challenge_categoria"],
-            is_correct=True,
-            attempts=attempts
-        )
-
-        # MOSTRAR EXPLICACIÓN
-        explanation = challenge_data.get('explicacion', '¡Excelente trabajo! Has dominado este concepto.')
-
-        success_message = (
-            f"✅ **¡Correcto!** +1 punto\n\n"
-            f"💡 **Explicación:** {explanation}\n\n"
-            f"🏅 Has completado un reto de nivel {user_data['challenge_level'].upper()}!\n\n"
-            "¿Quieres intentar otro reto?"
-        )
-
+    if result["is_correct"]:
+        # Respuesta correcta
         await message.answer(
-            success_message,
-            reply_markup=exercise_keyboard(),
+            f"✅ **¡Correcto!** +1 punto\n\n"
+            f"💡 **Explicación:** {result['explanation']}\n\n"
+            f"🏅 Has completado un reto de nivel {user_data['challenge_level'].upper()}!",
+            reply_markup=result_keyboard(is_correct=True),
             parse_mode="Markdown"
         )
         await state.clear()
     else:
-        await state.update_data({"challenge_attempts": attempts})
+        await state.update_data({"challenge_attempts": result["attempts"]})
 
-        if attempts >= 3:
-            # Mostrar respuesta correcta y explicación
-            correct_answer = challenge_data['opciones'][challenge_data['respuesta_correcta']]
-            explanation = challenge_data.get('explicacion', 'Sigue practicando para mejorar.')
-
-            failure_message = (
-                f"❌ **La respuesta correcta era:** {correct_answer}\n\n"
-                f"💡 **Explicación:** {explanation}\n\n"
-                "¿Quieres intentar con otro reto?"
-            )
-
+        if result["max_attempts_reached"]:
+            # Máximos intentos alcanzados
             await message.answer(
-                failure_message,
-                reply_markup=retry_keyboard(),
+                f"❌ **La respuesta correcta era:** {result['correct_answer']}\n\n"
+                f"💡 **Explicación:** {result['explanation']}",
+                reply_markup=result_keyboard(is_correct=False),
                 parse_mode="Markdown"
             )
             await state.clear()
         else:
-            remaining_attempts = 3 - attempts
-            await message.answer(
-                f"❌ Incorrecto. Te quedan {remaining_attempts} intentos."
-            )
+            # Intentar nuevamente
+            remaining_attempts = 3 - result["attempts"]
+            await message.answer(f"❌ Incorrecto. Te quedan {remaining_attempts} intentos.")
