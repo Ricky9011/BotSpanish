@@ -65,7 +65,6 @@ async def show_curiosity_callback(callback: CallbackQuery, state: FSMContext):
                 "📚 No hay curiosidades disponibles",
                 reply_markup=MainMenuKeyboard.main_menu()
             )
-
     except Exception as e:
         logger.error(f"Error en show_curiosity callback: {e}")
         await callback.answer("❌ Error al cargar curiosidad", show_alert=True)
