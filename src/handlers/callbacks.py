@@ -22,18 +22,18 @@ async def back_to_main_menu(callback: CallbackQuery, state: FSMContext):
         logger.error(f"Error en main_menu callback: {e}")
         await callback.answer("❌ Error al volver al menú")
 
-@router.callback_query(F.data == "show_curiosity")
-async def show_curiosity_callback(callback: CallbackQuery, state: FSMContext):
-    """Handler para mostrar curiosidades desde callbacks"""
-    try:
-        await callback.answer()
-        # Importar aquí para evitar circular imports
-        from src.handlers.curiosities import cmd_curiosidad
-        await state.clear()
-        await cmd_curiosidad(callback.message, state)
-    except Exception as e:
-        logger.error(f"Error en show_curiosity callback: {e}")
-        await callback.answer("❌ Error al cargar curiosidad")
+#@router.callback_query(F.data == "show_curiosity")
+#async def show_curiosity_callback(callback: CallbackQuery, state: FSMContext):
+#    """Handler para mostrar curiosidades desde callbacks"""
+#    try:
+#        await callback.answer()
+#        # Importar aquí para evitar circular imports
+#        from src.handlers.curiosities import cmd_curiosidad
+#        await state.clear()
+#        await cmd_curiosidad(callback.message, state)
+#    except Exception as e:
+#        logger.error(f"Error en show_curiosity callback: {e}")
+#        await callback.answer("❌ Error al cargar curiosidad")
 
 @router.callback_query(F.data == "next_exercise")
 async def next_exercise_callback(callback: CallbackQuery, state: FSMContext):
@@ -85,3 +85,21 @@ async def daily_challenge_callback(callback: CallbackQuery, state: FSMContext):
     except Exception as e:
         logger.error(f"Error en daily_challenge callback: {e}")
         await callback.answer("❌ Error al cargar reto")
+
+@router.callback_query(F.data == "my_stats")
+async def my_stats_callback(callback: CallbackQuery):
+    """Handler básico para estadísticas"""
+    await callback.answer("📊 Esta función estará disponible pronto!", show_alert=True)
+
+@router.callback_query(F.data == "daily_exercise")
+async def daily_exercise_callback(callback: CallbackQuery, state: FSMContext):
+    """Handler básico para ejercicio diario"""
+    await callback.answer()
+    await state.clear()
+    from src.handlers.exercises import cmd_exercise
+    await cmd_exercise(callback.message, state)
+
+@router.callback_query(F.data == "settings")
+async def settings_callback(callback: CallbackQuery):
+    """Handler básico para configuración"""
+    await callback.answer("⚙️ Configuración - Próximamente!", show_alert=True)

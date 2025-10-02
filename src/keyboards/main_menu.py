@@ -9,7 +9,7 @@ def main_menu() -> ReplyKeyboardMarkup:
 
     buttons = [
         "📝 Ejercicio", "🏆 Reto Diario", "📊 Progreso", "🎖️ Mis Logros",
-        "⚙️ Cambiar Nivel", "📚 Curiosidad", "👥 Invitar Amigos",
+        "⚙️ Cambiar Nivel", "📚 Curiosidad", "👥 Invitar Amigos",  # ← CAMBIADO A "📚 Curiosidad"
         "💎 Premium", "💬 Enviar Opinión"
     ]
 

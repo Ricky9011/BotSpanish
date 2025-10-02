@@ -9,7 +9,6 @@ from src.services.user_service import UserService
 from src.keyboards.main_menu import MainMenuKeyboard
 
 logger = logging.getLogger(__name__)
-
 router = Router(name="nivel")
 
 class LevelStates(StatesGroup):
@@ -20,7 +19,7 @@ def level_keyboard() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="Principiante"), KeyboardButton(text="Intermedio")],
-            [KeyboardButton(text="Avanzado"), KeyboardButton(text="🏠 Menú Principal")]
+            [KeyboardButton(text="Avanzado"), KeyboardButton(text="🏠 menú principal")]
         ],
         resize_keyboard=True
     )

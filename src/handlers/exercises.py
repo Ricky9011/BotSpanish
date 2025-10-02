@@ -8,7 +8,6 @@ from aiogram.types import Message, CallbackQuery, ReplyKeyboardMarkup, KeyboardB
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-
 from src.keyboards.main_menu import MainMenuKeyboard
 from src.services.user_service import UserService
 from src.services.exercise_service import ExerciseService
@@ -244,7 +243,7 @@ async def cmd_exercise(message: Message, state: FSMContext):
             correct_index = 0
             logger.warning(f"Índice de respuesta correcta inválido")
 
-        exercise_data["respuesta_correcta"] = correct_index
+        exercise_data['respuesta_correcta'] = correct_index
 
         # Guardar estado
         await state.update_data({
