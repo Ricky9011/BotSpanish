@@ -280,7 +280,7 @@ async def cancel_exercise(message: Message, state: FSMContext):
     )
 
 
-@router.message(F.text, ExerciseStates.WAITING_ANSWER)
+@router.message(F.text)
 async def handle_exercise_answer(message: Message, state: FSMContext):
     """Maneja las respuestas a los ejercicios"""
     try:

@@ -1,7 +1,7 @@
 from aiogram import Router, F
-from aiogram.fsm import state
 from aiogram.types import Message
 from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext  # ✅ IMPORTACIÓN CORRECTA
 
 from src.services.user_service import UserService
 
@@ -10,9 +10,10 @@ router = Router(name="progress")
 
 @router.message(Command("progreso"))
 @router.message(F.text == "📊 Progreso")
-@router.message(F.text == "📊 Mis estadísticas") # ¡Añade este!
-async def cmd_progress(message: Message):
-    await state.clear() # << AÑADIDO: Limpia el estado del usuario
+@router.message(F.text == "📊 Mis estadísticas")
+async def cmd_progress(message: Message, state: FSMContext):  # ✅ AÑADE state COMO PARÁMETRO
+    await state.clear()  # ✅ AHORA SÍ FUNCIONA
+
     user_id = message.from_user.id
     stats = UserService.get_user_stats(user_id)
 
@@ -46,6 +47,7 @@ async def cmd_progress(message: Message):
 
 @router.message(Command("logros"))
 @router.message(F.text == "🎖️ Mis Logros")
-async def cmd_achievements(message: Message):
+async def cmd_achievements(message: Message, state: FSMContext):  # ✅ AÑADE state TAMBIÉN AQUÍ
+    await state.clear()  # ✅ LIMPIA EL ESTADO TAMBIÉN AQUÍ
     # Implementar lógica de logros
     await message.answer("🎖️ **Tus Logros**\n\nPróximamente...")
