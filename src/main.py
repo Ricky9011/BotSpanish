@@ -35,7 +35,6 @@ async def main():
     from src.handlers.exercises import router as exercises_router
     from src.handlers.callbacks import router as callbacks_router
 
-
     dp.include_router(commands_router)
     dp.include_router(curiosities_router)  # ✅ PRIMERO - Maneja show_curiosity
     dp.include_router(nivel_router)
@@ -46,9 +45,6 @@ async def main():
     dp.include_router(exercises_router)
     dp.include_router(callbacks_router)  # ✅ DESPUÉS - No maneja show_curiosity
 
-
-
-
     # Handler específico para respuestas numéricas (por si hay conflicto)
     @dp.message(F.text.regexp(r"^\d+$"))
     async def numeric_fallback(message: Message):
@@ -58,9 +54,11 @@ async def main():
     await bot.delete_webhook(drop_pending_updates=True)
     logger.info("🚀 Bot híbrido iniciado")
     await dp.start_polling(bot, allowed_updates=["message", "callback_query"])
+
     @dp.message()
     async def unhandled_message(message: Message):
         logger.info(f"Mensaje no manejado: {message.text}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -1,6 +1,6 @@
 # keyboards/inline.py - VERSIÓN CORREGIDA
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 
 def exercise_keyboard() -> InlineKeyboardMarkup:
@@ -48,21 +48,6 @@ def result_keyboard(is_correct: bool) -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def main_menu_keyboard() -> InlineKeyboardMarkup:
-    """Teclado inline para el menú principal"""
-    builder = InlineKeyboardBuilder()
-    builder.button(text="📝 Ejercicio Diario", callback_data="daily_exercise")
-    builder.button(text="🏆 Reto Diario", callback_data="daily_challenge")
-    builder.button(text="📊 Mis Estadísticas", callback_data="my_stats")
-    builder.button(text="📚 Curiosidad", callback_data="show_curiosity")
-    builder.button(text="💬 Enviar Opinión", callback_data="send_feedback")
-    builder.button(text="⚙️ Cambiar Nivel", callback_data="change_level")
-    builder.button(text="⚙️ Configuración", callback_data="settings")
-    builder.button(text="👥 Invitar Amigos", callback_data="invite_friends")
-    builder.adjust(2)
-    return builder.as_markup()
-
-
 def curiosity_keyboard() -> InlineKeyboardMarkup:
     """Teclado específico para curiosidades"""
     builder = InlineKeyboardBuilder()
@@ -101,3 +86,13 @@ def stats_keyboard() -> InlineKeyboardMarkup:
     builder.button(text="🏠 menú principal", callback_data="main_menu")
     builder.adjust(1)
     return builder.as_markup()
+
+def challenge_result_keyboard():
+    """Teclado para resultados de retos diarios"""
+    keyboard = [
+        [
+            InlineKeyboardButton(text="🔄 Nuevo Reto", callback_data="new_challenge"),
+            InlineKeyboardButton(text="🏠 Menú Principal", callback_data="challenge_main_menu")
+        ]
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
