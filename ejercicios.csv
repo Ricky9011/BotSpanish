@@ -1,0 +1,121 @@
+"id","categoria","nivel","pregunta","opciones","respuesta_correcta","explicacion","activo"
+1,"gramática","principiante","¿Cuál es la forma correcta del verbo 'ser' en presente para 'él'?","[""[Soy"", ""Eres"", ""Es"", ""Somos]""]",2,NULL,True
+2,"gramática","principiante","Selecciona el artículo definido correcto para 'mesa'","[""[El"", ""La"", ""Los"", ""Las]""]",1,NULL,True
+3,"gramática","principiante","¿Cómo se dice 'libro' en plural?","[""[Libros"", ""Libres"", ""Libroes"", ""Libra]""]",0,NULL,True
+4,"gramática","principiante","Conjuga el verbo 'hablar' en presente para 'nosotros'","[""[Hablo"", ""Hablas"", ""Habla"", ""Hablamos]""]",3,NULL,True
+5,"gramática","principiante","¿Cuál es el adjetivo posesivo para 'yo'?","[""[Mi"", ""Tu"", ""Su"", ""Nuestro]""]",0,NULL,True
+6,"vocabulario","principiante","¿Qué objeto se usa para cortar papel?","[""[Lápiz"", ""Tijeras"", ""Libro"", ""Silla]""]",1,NULL,True
+7,"vocabulario","principiante","¿Cómo se llama el lugar donde vives?","[""[Escuela"", ""Casa"", ""Tienda"", ""Parque]""]",1,NULL,True
+8,"vocabulario","principiante","¿Qué animal hace 'miau'?","[""[Perro"", ""Pájaro"", ""Gato"", ""Pez]""]",2,NULL,True
+9,"vocabulario","principiante","¿Qué color es el sol?","[""[Azul"", ""Verde"", ""Rojo"", ""Amarillo]""]",3,NULL,True
+10,"vocabulario","principiante","¿Qué comes en el desayuno?","[""[Pizza"", ""Helado"", ""Cereal"", ""Pescado]""]",2,NULL,True
+11,"verbos","principiante","¿Cuál es el infinitivo de 'como'?","[""[Comer"", ""Beber"", ""Vivir"", ""Correr]""]",0,NULL,True
+12,"verbos","principiante","Conjuga 'beber' en presente para 'tú'","[""[Bebo"", ""Bebes"", ""Bebe"", ""Bebemos]""]",1,NULL,True
+13,"verbos","principiante","¿Qué verbo significa 'moverse rápidamente'?","[""[Caminar"", ""Dormir"", ""Correr"", ""Leer]""]",2,NULL,True
+14,"verbos","principiante","Conjuga 'vivir' en presente para 'ellos'","[""[Vivo"", ""Vives"", ""Vive"", ""Viven]""]",3,NULL,True
+15,"verbos","principiante","¿Cuál es el verbo para 'adquirir conocimiento'?","[""[Estudiar"", ""Trabajar"", ""Jugar"", ""Comprar]""]",0,NULL,True
+16,"frases","principiante","¿Cómo preguntarías '¿Cómo estás?' formalmente?","[""[¿Qué tal?"", ""¿Cómo está usted?"", ""¿Qué pasa?"", ""¿Cómo te va?]""]",1,NULL,True
+17,"frases","principiante","Completa: 'Hoy ___ lunes'","[""[soy"", ""eres"", ""es"", ""somos]""]",2,NULL,True
+18,"frases","principiante","¿Qué significa 'Tengo hambre'?","[""[Necesito dormir"", ""Necesito comer"", ""Tengo sed"", ""Estoy cansado]""]",1,NULL,True
+19,"frases","principiante","¿Cómo preguntarías dónde está el baño?","[""[¿Dónde está el baño?"", ""¿Qué hora es?"", ""¿Cómo te llamas?"", ""¿Cuánto cuesta?]""]",0,NULL,True
+20,"frases","principiante","Completa: 'Me ___ Juan'","[""[llamo"", ""llamas"", ""llama"", ""llamamos]""]",0,NULL,True
+21,"gramática","intermedio","¿Cuál es la forma correcta del pretérito perfecto para 'yo/comer'?","[""[He comido"", ""Has comido"", ""Ha comido"", ""Hemos comido]""]",0,NULL,True
+22,"gramática","intermedio","Selecciona el pronombre relativo correcto: 'El libro ___ compré es interesante'","[""[que"", ""quien"", ""cuyo"", ""donde]""]",0,NULL,True
+23,"gramática","intermedio","Conjuga 'ir' en futuro simple para 'ella'","[""[Irás"", ""Irá"", ""Iremos"", ""Irán]""]",1,NULL,True
+24,"gramática","intermedio","¿Cuál es la forma del condicional simple para 'tú/hacer'?","[""[Harías"", ""Haría"", ""Haríamos"", ""Harían]""]",0,NULL,True
+25,"gramática","intermedio","¿Qué tiempo verbal se usa para acciones habituales?","[""[Presente"", ""Pretérito"", ""Futuro"", ""Condicional]""]",0,NULL,True
+26,"vocabulario","intermedio","¿Qué significa 'enamorarse'?","[""[Casarse"", ""Enamorarse"", ""Discutir"", ""Terminar una relación]""]",1,NULL,True
+27,"vocabulario","intermedio","Sinónimo de 'rápidamente'","[""[Lentamente"", ""Velozmente"", ""Pausadamente"", ""Cuidadosamente]""]",1,NULL,True
+28,"vocabulario","intermedio","¿Qué es un 'quirófano'?","[""[Sala de operaciones"", ""Sala de espera"", ""Farmacia"", ""Laboratorio]""]",0,NULL,True
+29,"vocabulario","intermedio","Antónimo de 'generoso'","[""[Amable"", ""Tacaño"", ""Rico"", ""Feliz]""]",1,NULL,True
+30,"vocabulario","intermedio","¿Qué significa 'soportar'?","[""[Apoyar"", ""Tolerar"", ""Ayudar"", ""Sostener]""]",1,NULL,True
+31,"verbos","intermedio","Conjuga 'saber' en imperfecto para 'nosotros'","[""[Sabíamos"", ""Sabíais"", ""Sabían"", ""Sabía]""]",0,NULL,True
+32,"verbos","intermedio","¿Cuál es el participio de 'escribir'?","[""[Escribido"", ""Escrito"", ""Escribiendo"", ""Escribado]""]",1,NULL,True
+33,"verbos","intermedio","Conjuga 'poner' en subjuntivo presente para 'yo'","[""[Pongo"", ""Pon"", ""Ponga"", ""Ponía]""]",2,NULL,True
+34,"verbos","intermedio","¿Qué verbo es irregular en todos sus tiempos?","[""[Hablar"", ""Comer"", ""Ser"", ""Vivir]""]",2,NULL,True
+35,"verbos","intermedio","Conjuga 'conducir' en pretérito indefinido para 'él'","[""[Conducí"", ""Conduciste"", ""Condujo"", ""Conducimos]""]",2,NULL,True
+36,"comprensión","intermedio","¿Qué significa la expresión 'ponerse las pilas'?","[""[Cargar baterías"", ""Ponerse a trabajar con energía"", ""Estar cansado"", ""Relajarse]""]",1,NULL,True
+37,"comprensión","intermedio","'Estar en las nubes' significa:","[""[Estar feliz"", ""Estar distraído"", ""Estar volando"", ""Tener éxito]""]",1,NULL,True
+38,"comprensión","intermedio","En el contexto: 'Me duele el alma', ¿qué expresa?","[""[Dolor físico"", ""Tristeza profunda"", ""Felicidad"", ""Cansancio]""]",1,NULL,True
+39,"comprensión","intermedio","'No hay moros en la costa' significa:","[""[No hay problemas"", ""No hay gente"", ""No hay peligro"", ""No hay extranjeros]""]",2,NULL,True
+40,"comprensión","intermedio","¿Qué implica 'ser un gallina'?","[""[Ser valiente"", ""Ser cobarde"", ""Ser importante"", ""Ser ruidoso]""]",1,NULL,True
+41,"gramática","avanzado","Conjuga 'haber' en subjuntivo pluscuamperfecto para 'ellos'","[""[Hubieran"", ""Hubiesen"", ""Habrían"", ""Habían]""]",1,NULL,True
+42,"gramática","avanzado","¿Cuál es la forma correcta de la pasiva refleja?","[""[Se venden libros"", ""Los libros son vendidos"", ""Vendieron libros"", ""Libros vendidos]""]",0,NULL,True
+43,"gramática","avanzado","Conjuga 'decir' en futuro perfecto para 'yo'","[""[Habré dicho"", ""Habrás dicho"", ""Habrá dicho"", ""Habremos dicho]""]",0,NULL,True
+44,"gramática","avanzado","¿Qué modo verbal expresa duda o posibilidad?","[""[Indicativo"", ""Subjuntivo"", ""Imperativo"", ""Condicional]""]",1,NULL,True
+45,"gramática","avanzado","Conjuga 'satisfacer' en condicional compuesto para 'tú'","[""[Habrías satisfecho"", ""Habrías satisfacido"", ""Satisfacerías"", ""Satisfarías]""]",0,NULL,True
+46,"vocabulario","avanzado","¿Qué significa 'procrastinar'?","[""[Proceder"", ""Procesar"", ""Dejar para después"", ""Proclamar]""]",2,NULL,True
+47,"vocabulario","avanzado","Sinónimo de 'pernicioso'","[""[Beneficioso"", ""Dañino"", ""Permitido"", ""Necesario]""]",1,NULL,True
+48,"vocabulario","avanzado","¿Qué es un 'sesgo'?","[""[Un corte"", ""Un prejuicio"", ""Una sesión"", ""Una curva]""]",1,NULL,True
+49,"vocabulario","avanzado","Antónimo de 'efímero'","[""[Temporal"", ""Durable"", ""Fugaz"", ""Instantáneo]""]",1,NULL,True
+50,"vocabulario","avanzado","¿Qué significa 'idiosincrasia'?","[""[Identidad"", ""Modismo"", ""Característica única"", ""Idea]""]",2,NULL,True
+51,"expresiones","avanzado","¿Qué significa 'meter la pata'?","[""[Ayudar a alguien"", ""Cometer un error"", ""Interferir"", ""Comenzar algo]""]",1,NULL,True
+52,"expresiones","avanzado","'Ir de punta en blanco' significa:","[""[Estar armado"", ""Ir elegantemente vestido"", ""Estar listo"", ""Estar enojado]""]",1,NULL,True
+53,"expresiones","avanzado","¿Cuándo se usa 'a pies juntillas'?","[""[Expresar certeza"", ""Describir postura"", ""Indicar velocidad"", ""Mostrar acuerdo]""]",3,NULL,True
+54,"expresiones","avanzado","'No dar pie con bola' significa:","[""[Ser torpe"", ""Tener éxito"", ""Ser inactivo"", ""Ser preciso]""]",0,NULL,True
+55,"expresiones","avanzado","¿Qué implica 'ser un cero a la izquierda'?","[""[Ser importante"", ""Ser inútil"", ""Ser el primero"", ""Ser matemático]""]",1,NULL,True
+56,"literatura","avanzado","¿A qué movimiento pertenece García Márquez?","[""[Romanticismo"", ""Realismo"", ""Boom latinoamericano"", ""Generación del 98]""]",2,NULL,True
+57,"literatura","avanzado","¿Quién escribió 'La Celestina'?","[""[Cervantes"", ""Fernando de Rojas"", ""Lope de Vega"", ""Calderón de la Barca]""]",1,NULL,True
+58,"literatura","avanzado","¿Qué figura literaria es 'el viento susurraba secretos'?","[""[Metáfora"", ""Hipérbole"", ""Personificación"", ""Metonimia]""]",2,NULL,True
+59,"literatura","avanzado","¿Qué obra es de Federico García Lorca?","[""[Platero y yo"", ""La casa de Bernarda Alba"", ""Niebla"", ""Rayuela]""]",1,NULL,True
+60,"literatura","avanzado","¿A qué siglo pertenece el Siglo de Oro español?","[""[XIV-XV"", ""XV-XVI"", ""XVI-XVII"", ""XVIII-XIX]""]",2,NULL,True
+61,"gramática","principiante","¿Cuál es la forma correcta del verbo 'ser' en presente para 'él'?","[""[Soy"", ""Eres"", ""Es"", ""Somos]""]",2,NULL,True
+62,"gramática","principiante","Selecciona el artículo definido correcto para 'mesa'","[""[El"", ""La"", ""Los"", ""Las]""]",1,NULL,True
+63,"gramática","principiante","¿Cómo se dice 'libro' en plural?","[""[Libros"", ""Libres"", ""Libroes"", ""Libra]""]",0,NULL,True
+64,"gramática","principiante","Conjuga el verbo 'hablar' en presente para 'nosotros'","[""[Hablo"", ""Hablas"", ""Habla"", ""Hablamos]""]",3,NULL,True
+65,"gramática","principiante","¿Cuál es el adjetivo posesivo para 'yo'?","[""[Mi"", ""Tu"", ""Su"", ""Nuestro]""]",0,NULL,True
+66,"vocabulario","principiante","¿Qué objeto se usa para cortar papel?","[""[Lápiz"", ""Tijeras"", ""Libro"", ""Silla]""]",1,NULL,True
+67,"vocabulario","principiante","¿Cómo se llama el lugar donde vives?","[""[Escuela"", ""Casa"", ""Tienda"", ""Parque]""]",1,NULL,True
+68,"vocabulario","principiante","¿Qué animal hace 'miau'?","[""[Perro"", ""Pájaro"", ""Gato"", ""Pez]""]",2,NULL,True
+69,"vocabulario","principiante","¿Qué color es el sol?","[""[Azul"", ""Verde"", ""Rojo"", ""Amarillo]""]",3,NULL,True
+70,"vocabulario","principiante","¿Qué comes en el desayuno?","[""[Pizza"", ""Helado"", ""Cereal"", ""Pescado]""]",2,NULL,True
+71,"verbos","principiante","¿Cuál es el infinitivo de 'como'?","[""[Comer"", ""Beber"", ""Vivir"", ""Correr]""]",0,NULL,True
+72,"verbos","principiante","Conjuga 'beber' en presente para 'tú'","[""[Bebo"", ""Bebes"", ""Bebe"", ""Bebemos]""]",1,NULL,True
+73,"verbos","principiante","¿Qué verbo significa 'moverse rápidamente'?","[""[Caminar"", ""Dormir"", ""Correr"", ""Leer]""]",2,NULL,True
+74,"verbos","principiante","Conjuga 'vivir' en presente para 'ellos'","[""[Vivo"", ""Vives"", ""Vive"", ""Viven]""]",3,NULL,True
+75,"verbos","principiante","¿Cuál es el verbo para 'adquirir conocimiento'?","[""[Estudiar"", ""Trabajar"", ""Jugar"", ""Comprar]""]",0,NULL,True
+76,"frases","principiante","¿Cómo preguntarías '¿Cómo estás?' formalmente?","[""[¿Qué tal?"", ""¿Cómo está usted?"", ""¿Qué pasa?"", ""¿Cómo te va?]""]",1,NULL,True
+77,"frases","principiante","Completa: 'Hoy ___ lunes'","[""[soy"", ""eres"", ""es"", ""somos]""]",2,NULL,True
+78,"frases","principiante","¿Qué significa 'Tengo hambre'?","[""[Necesito dormir"", ""Necesito comer"", ""Tengo sed"", ""Estoy cansado]""]",1,NULL,True
+79,"frases","principiante","¿Cómo preguntarías dónde está el baño?","[""[¿Dónde está el baño?"", ""¿Qué hora es?"", ""¿Cómo te llamas?"", ""¿Cuánto cuesta?]""]",0,NULL,True
+80,"frases","principiante","Completa: 'Me ___ Juan'","[""[llamo"", ""llamas"", ""llama"", ""llamamos]""]",0,NULL,True
+81,"gramática","intermedio","¿Cuál es la forma correcta del pretérito perfecto para 'yo/comer'?","[""[He comido"", ""Has comido"", ""Ha comido"", ""Hemos comido]""]",0,NULL,True
+82,"gramática","intermedio","Selecciona el pronombre relativo correcto: 'El libro ___ compré es interesante'","[""[que"", ""quien"", ""cuyo"", ""donde]""]",0,NULL,True
+83,"gramática","intermedio","Conjuga 'ir' en futuro simple para 'ella'","[""[Irás"", ""Irá"", ""Iremos"", ""Irán]""]",1,NULL,True
+84,"gramática","intermedio","¿Cuál es la forma del condicional simple para 'tú/hacer'?","[""[Harías"", ""Haría"", ""Haríamos"", ""Harían]""]",0,NULL,True
+85,"gramática","intermedio","¿Qué tiempo verbal se usa para acciones habituales?","[""[Presente"", ""Pretérito"", ""Futuro"", ""Condicional]""]",0,NULL,True
+86,"vocabulario","intermedio","¿Qué significa 'enamorarse'?","[""[Casarse"", ""Enamorarse"", ""Discutir"", ""Terminar una relación]""]",1,NULL,True
+87,"vocabulario","intermedio","Sinónimo de 'rápidamente'","[""[Lentamente"", ""Velozmente"", ""Pausadamente"", ""Cuidadosamente]""]",1,NULL,True
+88,"vocabulario","intermedio","¿Qué es un 'quirófano'?","[""[Sala de operaciones"", ""Sala de espera"", ""Farmacia"", ""Laboratorio]""]",0,NULL,True
+89,"vocabulario","intermedio","Antónimo de 'generoso'","[""[Amable"", ""Tacaño"", ""Rico"", ""Feliz]""]",1,NULL,True
+90,"vocabulario","intermedio","¿Qué significa 'soportar'?","[""[Apoyar"", ""Tolerar"", ""Ayudar"", ""Sostener]""]",1,NULL,True
+91,"verbos","intermedio","Conjuga 'saber' en imperfecto para 'nosotros'","[""[Sabíamos"", ""Sabíais"", ""Sabían"", ""Sabía]""]",0,NULL,True
+92,"verbos","intermedio","¿Cuál es el participio de 'escribir'?","[""[Escribido"", ""Escrito"", ""Escribiendo"", ""Escribado]""]",1,NULL,True
+93,"verbos","intermedio","Conjuga 'poner' en subjuntivo presente para 'yo'","[""[Pongo"", ""Pon"", ""Ponga"", ""Ponía]""]",2,NULL,True
+94,"verbos","intermedio","¿Qué verbo es irregular en todos sus tiempos?","[""[Hablar"", ""Comer"", ""Ser"", ""Vivir]""]",2,NULL,True
+95,"verbos","intermedio","Conjuga 'conducir' en pretérito indefinido para 'él'","[""[Conducí"", ""Conduciste"", ""Condujo"", ""Conducimos]""]",2,NULL,True
+96,"comprensión","intermedio","¿Qué significa la expresión 'ponerse las pilas'?","[""[Cargar baterías"", ""Ponerse a trabajar con energía"", ""Estar cansado"", ""Relajarse]""]",1,NULL,True
+97,"comprensión","intermedio","'Estar en las nubes' significa:","[""[Estar feliz"", ""Estar distraído"", ""Estar volando"", ""Tener éxito]""]",1,NULL,True
+98,"comprensión","intermedio","En el contexto: 'Me duele el alma', ¿qué expresa?","[""[Dolor físico"", ""Tristeza profunda"", ""Felicidad"", ""Cansancio]""]",1,NULL,True
+99,"comprensión","intermedio","'No hay moros en la costa' significa:","[""[No hay problemas"", ""No hay gente"", ""No hay peligro"", ""No hay extranjeros]""]",2,NULL,True
+100,"comprensión","intermedio","¿Qué implica 'ser un gallina'?","[""[Ser valiente"", ""Ser cobarde"", ""Ser importante"", ""Ser ruidoso]""]",1,NULL,True
+101,"gramática","avanzado","Conjuga 'haber' en subjuntivo pluscuamperfecto para 'ellos'","[""[Hubieran"", ""Hubiesen"", ""Habrían"", ""Habían]""]",1,NULL,True
+102,"gramática","avanzado","¿Cuál es la forma correcta de la pasiva refleja?","[""[Se venden libros"", ""Los libros son vendidos"", ""Vendieron libros"", ""Libros vendidos]""]",0,NULL,True
+103,"gramática","avanzado","Conjuga 'decir' en futuro perfecto para 'yo'","[""[Habré dicho"", ""Habrás dicho"", ""Habrá dicho"", ""Habremos dicho]""]",0,NULL,True
+104,"gramática","avanzado","¿Qué modo verbal expresa duda o posibilidad?","[""[Indicativo"", ""Subjuntivo"", ""Imperativo"", ""Condicional]""]",1,NULL,True
+105,"gramática","avanzado","Conjuga 'satisfacer' en condicional compuesto para 'tú'","[""[Habrías satisfecho"", ""Habrías satisfacido"", ""Satisfacerías"", ""Satisfarías]""]",0,NULL,True
+106,"vocabulario","avanzado","¿Qué significa 'procrastinar'?","[""[Proceder"", ""Procesar"", ""Dejar para después"", ""Proclamar]""]",2,NULL,True
+107,"vocabulario","avanzado","Sinónimo de 'pernicioso'","[""[Beneficioso"", ""Dañino"", ""Permitido"", ""Necesario]""]",1,NULL,True
+108,"vocabulario","avanzado","¿Qué es un 'sesgo'?","[""[Un corte"", ""Un prejuicio"", ""Una sesión"", ""Una curva]""]",1,NULL,True
+109,"vocabulario","avanzado","Antónimo de 'efímero'","[""[Temporal"", ""Durable"", ""Fugaz"", ""Instantáneo]""]",1,NULL,True
+110,"vocabulario","avanzado","¿Qué significa 'idiosincrasia'?","[""[Identidad"", ""Modismo"", ""Característica única"", ""Idea]""]",2,NULL,True
+111,"expresiones","avanzado","¿Qué significa 'meter la pata'?","[""[Ayudar a alguien"", ""Cometer un error"", ""Interferir"", ""Comenzar algo]""]",1,NULL,True
+112,"expresiones","avanzado","'Ir de punta en blanco' significa:","[""[Estar armado"", ""Ir elegantemente vestido"", ""Estar listo"", ""Estar enojado]""]",1,NULL,True
+113,"expresiones","avanzado","¿Cuándo se usa 'a pies juntillas'?","[""[Expresar certeza"", ""Describir postura"", ""Indicar velocidad"", ""Mostrar acuerdo]""]",3,NULL,True
+114,"expresiones","avanzado","'No dar pie con bola' significa:","[""[Ser torpe"", ""Tener éxito"", ""Ser inactivo"", ""Ser preciso]""]",0,NULL,True
+115,"expresiones","avanzado","¿Qué implica 'ser un cero a la izquierda'?","[""[Ser importante"", ""Ser inútil"", ""Ser el primero"", ""Ser matemático]""]",1,NULL,True
+116,"literatura","avanzado","¿A qué movimiento pertenece García Márquez?","[""[Romanticismo"", ""Realismo"", ""Boom latinoamericano"", ""Generación del 98]""]",2,NULL,True
+117,"literatura","avanzado","¿Quién escribió 'La Celestina'?","[""[Cervantes"", ""Fernando de Rojas"", ""Lope de Vega"", ""Calderón de la Barca]""]",1,NULL,True
+118,"literatura","avanzado","¿Qué figura literaria es 'el viento susurraba secretos'?","[""[Metáfora"", ""Hipérbole"", ""Personificación"", ""Metonimia]""]",2,NULL,True
+119,"literatura","avanzado","¿Qué obra es de Federico García Lorca?","[""[Platero y yo"", ""La casa de Bernarda Alba"", ""Niebla"", ""Rayuela]""]",1,NULL,True
+120,"literatura","avanzado","¿A qué siglo pertenece el Siglo de Oro español?","[""[XIV-XV"", ""XV-XVI"", ""XVI-XVII"", ""XVIII-XIX]""]",2,NULL,True

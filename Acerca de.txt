@@ -1,0 +1,19 @@
+Creado por: Expecto_Codum
+// Fecha de creación: 2024-06-15
+// Descripción: Este es un bot de telegram para apoyar el estudio de la lengua española, proporcionando definiciones, sinónimos, antónimos y ejemplos
+de uso de palabras en español.
+De forma didáctica y amigable, el bot busca facilitar el aprendizaje y la comprensión del idioma.
+// Funcionalidades:
+// 1. Definiciones: Proporciona definiciones claras y concisas de palabras en español.
+// 2. Sinónimos y Antónimos: Ofrece listas de sinónimos y antónimos para enriquecer el vocabulario.
+// 3. Ejemplos de Uso: Muestra ejemplos prácticos de cómo se utilizan las palabras en diferentes contextos.
+// 4. Interfaz Amigable: Diseñado para ser fácil de usar, con comandos simples y respuestas rápidas.
+// 5. Actualizaciones Constantes: El bot se actualiza regularmente para incluir nuevas palabras y mejorar sus respuestas.
+// 6. (*proximas versiones*)Soporte Multilingüe: Aunque está enfocado en el español, el bot puede ofrecer traducciones y explicaciones en otros idiomas.
+// 7. (*proximas versiones*)Juegos y Quizzes: Incluye actividades interactivas para practicar el vocabulario y la gramática de manera divertida.
+// 8. (*proximas versiones*)Integración con Recursos Externos: Capacidad para conectarse con diccionarios en línea y otras herramientas educativas.
+// Objetivo: Facilitar el aprendizaje del español de manera accesible y entretenida, ayudando a los usuarios a mejorar su dominio del idioma.
+// Contacto: Para sugerencias o reportar problemas, contactar a Expecto_Codum en Telegram.
+// Licencia: Este bot es de código abierto.
+// Agradecimientos: A la comunidad de desarrolladores y educadores que inspiran la creación de herramientas educativas innovadoras. A la comunidad rusa hispoanohablante por su apoyo y colaboración.
+// ¡Gracias por usar el bot y feliz aprendizaje del español!

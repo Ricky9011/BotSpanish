@@ -1,0 +1,35 @@
+1. Verificar que los retos siempre sean un nivel superior al nivel del jugador.
+2. Añadir un sistema de clasificación global para los jugadores.
+3. Añadir un sistema de logros para motivar a los jugadores.
+4. Mejorar la interfaz de usuario para que sea más intuitiva.
+5. Optimizar el rendimiento del juego en dispositivos móviles.
+6. Añadir soporte para múltiples idiomas.
+7. Implementar un sistema de tutorial para nuevos jugadores.
+8. Crear un sistema de recompensas diarias para fomentar la retención de jugadores.
+9. Añadir efectos de sonido y música de fondo para mejorar la experiencia del usuario.
+10. Realizar pruebas de usabilidad para identificar áreas de mejora en la experiencia del usuario.
+11. Implementar un sistema de notificaciones para informar a los jugadores sobre eventos importantes.
+12. Añadir un sistema de personalización de personajes.
+13. Mejorar la seguridad del juego para prevenir trampas y hacks.
+14. Pagos y donaciones dentro del juego para apoyar el desarrollo continuo.
+15. Implementar un sistema de chat para que los jugadores puedan comunicarse entre sí.
+16. Añadir un sistema de misiones secundarias para aumentar la variedad del juego.
+17. Crear un sistema de equipos por paises o lenguaje para fomentar la colaboración entre jugadores.
+--------------English------------------
+1. Ensure that challenges are always one level above the player's level. (Completed)
+2. Add a global ranking system for players.
+3. Add an achievement system to motivate players.
+4. Improve the user interface to make it more intuitive.
+5. Optimize game performance on mobile devices.
+6. Add support for multiple languages.
+7. Implement a tutorial system for new players.
+8. Create a daily reward system to encourage player retention.
+9. Add sound effects and background music to enhance the user experience.
+10. Conduct usability testing to identify areas for improvement in the user experience.
+11. Implement a notification system to inform players about important events.
+12. Add a character customization system.
+13. Improve game security to prevent cheating and hacking.
+14. Implement in-game payments and donations to support continuous development.
+15. Implement a chat system so players can communicate with each other.
+16. Add a side quest system to increase game variety.
+17. Create a team system by country or language to encourage collaboration among players.
